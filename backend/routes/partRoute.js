@@ -30,7 +30,7 @@ router.route("/parts/:id").get(async (request, response) => {
 	}
 });
 
-//Create One (POST) *Not Tested*
+//Create One (POST)
 router.route("/parts").post(async (request, response) => {
 	let part = request.body;
 	const newPart = new Part(part);
@@ -63,8 +63,10 @@ router.route("/parts/:id").put(async (request, response) => {
 	}
 });
 
-//Delete One (DELETE) *Not Tested*
+//Delete One (DELETE)
 router.route("/parts/:id").delete(async (request, response) => {
+	const { id } = request.params;
+
 	if (!mongoose.Types.ObjectId.isValid(id)) {
 		return response
 			.status(401)
@@ -72,7 +74,7 @@ router.route("/parts/:id").delete(async (request, response) => {
 	}
 
 	try {
-		const parts = await Part.deleteOne({ _id: request.params.id });
+		const parts = await Part.findByIdAndDelete({ _id: request.params.id });
 		response.status(200).json({ success: true, data: parts });
 	} catch (error) {
 		console.log("could not delete part", error.message);
