@@ -1,8 +1,12 @@
+const mongoose = require("mongoose");
 const express = require("express");
 const Part = require("../models/part");
 
 let router = express.Router();
 
+//GET - POST - DELETE - PUT
+
+//Retrieve All (GET)
 router.route("/parts").get(async (request, response) => {
 	try {
 		const parts = await Part.find({});
@@ -13,15 +17,67 @@ router.route("/parts").get(async (request, response) => {
 	}
 });
 
-//GET - POST - DELETE - PUT
-//#1 - Retrieve All (GET)
-
-//#2 - Retrieve One (GET)
+//Retrieve One (GET)
 //http://localhost:3000/posts/12345
 
-//#3 - Create One (POST)
+router.route("/parts/:id").get(async (request, response) => {
+	try {
+		const parts = await Part.findOne({ _id: request.params.id });
+		response.status(200).json({ success: true, data: parts });
+	} catch (error) {
+		console.log("could not fetch part", error.message);
+		response.status(500).json({ success: false, message: "server error" });
+	}
+});
 
-//#4 - Update One (PUT)
+//Create One (POST) *Not Tested*
+router.route("/parts").post(async (request, response) => {
+	let part = request.body;
+	const newPart = new Part(part);
+	try {
+		await newPart.save();
+		response.status(201).json({ success: true, data: newPart });
+	} catch (error) {
+		console.log("Could not create new part", error.message);
+		response.status(500).json({ success: false, message: "server error" });
+	}
+});
 
-//#5 - Delete One (DELETE)
+//Update One (PUT) *Not Tested*
+router.route("/parts/:id").put(async (request, response) => {
+	const { id } = request.params;
+	let part = request.body;
+
+	if (!mongoose.Types.ObjectId.isValid(id)) {
+		return response
+			.status(401)
+			.json({ success: false, message: "invalid part id" });
+	}
+
+	try {
+		const updatePart = await Part.findByIdAndUpdate(id, part, { new: true });
+		response.status(200).json({ success: true, data: updatePart });
+	} catch (error) {
+		console.log("Could not create new part", error.message);
+		response.status(500).json({ success: false, message: "server error" });
+	}
+});
+
+//Delete One (DELETE) *Not Tested*
+router.route("/parts/:id").delete(async (request, response) => {
+	if (!mongoose.Types.ObjectId.isValid(id)) {
+		return response
+			.status(401)
+			.json({ success: false, message: "invalid part id" });
+	}
+
+	try {
+		const parts = await Part.deleteOne({ _id: request.params.id });
+		response.status(200).json({ success: true, data: parts });
+	} catch (error) {
+		console.log("could not delete part", error.message);
+		response.status(500).json({ success: false, message: "server error" });
+	}
+});
+
 module.exports = router;
