@@ -1,26 +1,32 @@
-/* const connect = require("./connect");
-
-const express = require("express"); //middleware
-const cors = require("cors"); //tells express how to handle resources across domains
+const express = require("express");
+const cors = require("cors");
+const db = require("./connect");
+const Part = require("./routes/partRoute");
+/* const Part = require("./models/part"); */
 
 const app = express();
 const PORT = 3000;
 
 app.use(cors());
-app.use(express.json()); //parse requests in json format
-
-app.listen(PORT, () => {
-	connect.connectToServer();
-	console.log(`server is running on port ${PORT}`);
-});
- */
-const express = require("express");
-const db = require("./connect");
-
-const app = express();
-const PORT = 3000;
-
 app.use(express.json());
+app.use(Part);
+
+/* async function run() {
+	try {
+		const findPart = await Part.find({});
+		console.log(findPart);
+	} catch (error) {
+		console.log(error.message);
+	}
+}
+run(); */
+
+/* async function run() {
+	const firstPart = new Part({ name: "Killer", type: "Queen" });
+	await firstPart.save();
+	console.log(firstPart);
+}
+run(); */
 
 db.once("open", () => {
 	app.listen(PORT, () => {
