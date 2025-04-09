@@ -1,20 +1,32 @@
-import { useState, useEffect } from "react";
-import axios from "axios";
 import "./App.css";
+import { HashRouter as Router, Routes, Route } from "react-router-dom";
+import { Homepage } from "../pages/Homepage";
+import { CreateBuilds } from "../pages/CreateBuilds";
+import { ReadBuilds } from "../pages/ReadBuilds";
 
 function App() {
-	const [data, setData] = useState();
+	return (
+		<Router>
+			<Routes>
+				<Route path="/" element={<Homepage />} />
+				<Route path="/createpc" element={<CreateBuilds />} />
+				<Route path="/viewpc/:id" element={<ReadBuilds />} />
+			</Routes>
+		</Router>
+	);
+}
+export default App;
 
-	function createPost() {
+/* function createPost() {
 		let partObject = {
 			name: "Pelle",
 			type: "Mustache",
 		};
 
 		axios.post("http://localhost:3000/parts", partObject);
-	}
+	} */
 
-	/* useEffect(() => {
+/* useEffect(() => {
 		async function fetchData() {
 			const response = await axios.get("http://localhost:3000/parts");
 			if (response.status === 200) {
@@ -24,11 +36,20 @@ function App() {
 		fetchData();
 	}, []); */
 
-	return (
-		<>
-			<button onClick={createPost}>Create Part</button>
-		</>
-	);
-}
+/* useEffect(() => {
+		async function loadAllParts() {
+			let data = await getParts();
+			if (data) {
+				setParts(data);
+			}
+		}
+		loadAllParts();
+	}, []); */
 
-export default App;
+/* function makePart() {
+		let partObject = {
+			name: "Musse",
+			type: "Schnusse",
+		};
+		createPart(partObject);
+	} */
