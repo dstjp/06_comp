@@ -3,14 +3,18 @@ import { HashRouter as Router, Routes, Route } from "react-router-dom";
 import { Homepage } from "../pages/Homepage";
 import { CreateBuilds } from "../pages/CreateBuilds";
 import { ReadBuilds } from "../pages/ReadBuilds";
+import { Navbar } from "../components/Navbar";
+import { Layout } from "../components/Layout";
 
 function App() {
 	return (
 		<Router>
 			<Routes>
-				<Route path="/" element={<Homepage />} />
-				<Route path="/createpc" element={<CreateBuilds />} />
-				<Route path="/viewpc/:id" element={<ReadBuilds />} />
+				<Route element={<Layout />}>
+					<Route path="/" element={<Homepage />} />
+					<Route path="/createpc" element={<CreateBuilds />} />
+					<Route path="/viewpc/:id" element={<ReadBuilds />} />
+				</Route>
 			</Routes>
 		</Router>
 	);
