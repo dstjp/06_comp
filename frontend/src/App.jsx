@@ -13,7 +13,7 @@ function App() {
 				<Route element={<Layout />}>
 					<Route path="/" element={<Homepage />} />
 					<Route path="/createpc" element={<CreateBuilds />} />
-					<Route path="/viewpc/:id" element={<ReadBuilds />} />
+					<Route path="/viewpc/" element={<ReadBuilds />} />
 				</Route>
 			</Routes>
 		</Router>

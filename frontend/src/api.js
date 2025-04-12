@@ -1,6 +1,7 @@
 import axios from "axios";
 const URL = "http://localhost:3000";
 
+//Retrieve all Parts
 export async function getParts() {
 	const response = await axios.get(`${URL}/parts`);
 
@@ -10,6 +11,7 @@ export async function getParts() {
 		response.status(500).json({ success: false, message: "server error" });
 	}
 }
+//Retrieve a Part
 export async function getPart(id) {
 	const response = await axios.get(`${URL}/parts/${id}`);
 
@@ -19,6 +21,7 @@ export async function getPart(id) {
 		response.status(500).json({ success: false, message: "server error" });
 	}
 }
+//Create Part
 export async function createPart(part) {
 	const response = await axios.post(`${URL}/parts/`, part);
 
@@ -28,6 +31,7 @@ export async function createPart(part) {
 		response.status(500).json({ success: false, message: "server error" });
 	}
 }
+//Update a Part
 export async function updatePart(id, part) {
 	const response = await axios.put(`${URL}/parts/${id}`, part);
 
@@ -37,6 +41,7 @@ export async function updatePart(id, part) {
 		response.status(500).json({ success: false, message: "server error" });
 	}
 }
+//Delete a Part
 export async function deletePart(id) {
 	const response = await axios.delete(`${URL}/parts/${id}`);
 
