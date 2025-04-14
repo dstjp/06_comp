@@ -7,7 +7,7 @@ export function ReadBuilds() {
 	const [builds, setBuilds] = useState([]);
 	const [loading, setLoading] = useState(true);
 	const [error, setError] = useState(null);
-	const [selectedBuild, setSelectedBuild] = useState(null);
+	const [componentDetails, setComponentDetails] = useState(null);
 
 	useEffect(() => {
 		fetchBuilds();
@@ -26,36 +26,330 @@ export function ReadBuilds() {
 		}
 	};
 
-	const viewBuildDetails = (buildId) => {
-		const build = builds.find((b) => b._id === buildId);
-		setSelectedBuild(build);
+	const showComponentDetails = (partType, part) => {
+		if (!part) return;
+
+		setComponentDetails({
+			type: partType,
+			data: part,
+		});
+	};
+
+	const renderComponentRow = (build, partType, part) => {
+		if (!part) return null;
+
+		return (
+			<p
+				onClick={() => showComponentDetails(partType, part)}
+				style={{ cursor: "pointer" }}
+				key={`${build._id}-${partType}`}
+			>
+				{getComponentLabel(partType)}: {part.name}
+			</p>
+		);
+	};
+
+	const getComponentLabel = (type) => {
+		const labels = {
+			cpu: "CPU",
+			gpu: "GPU",
+			ram: "RAM",
+			storage: "Storage",
+			motherboard: "Motherboard",
+			psu: "PSU",
+			case: "Case",
+		};
+		return labels[type] || type.toUpperCase();
 	};
 
 	return (
-		<div className="build-container">
+		<div className="container">
 			<h3>Your PCs</h3>
 
-			<div className="build-list">
-				{builds.map((build) => (
-					<div key={build._id}>
-						<h4>{build.name}</h4>
-						<div>{build.cpu && `CPU: ${build.cpu.name}`}</div>
-						<p>{build.gpu && `GPU: ${build.gpu.name}`}</p>
-						<p>{build.ram && `RAM: ${build.ram.name}`}</p>
-						<p>{build.storage && `Storage: ${build.storage.name}`}</p>
-						<p>
-							{build.motherboard && `Motherboard: ${build.motherboard.name}`}
-						</p>
-						<p>{build.psu && `PSU: ${build.psu.name}`}</p>
-						<p>{build.case && `Case: ${build.case.name}`}</p>
+			{loading ? (
+				<p>Loading builds...</p>
+			) : error ? (
+				<p>{error}</p>
+			) : builds.length === 0 ? (
+				<p>No builds created yet.</p>
+			) : (
+				<div className="builds-container">
+					<div className="builds-list">
+						{builds.map((build) => (
+							<div key={build._id}>
+								<h4>{build.name}</h4>
+								{renderComponentRow(build, "cpu", build.cpu)}
+								{renderComponentRow(build, "gpu", build.gpu)}
+								{renderComponentRow(build, "ram", build.ram)}
+								{renderComponentRow(build, "storage", build.storage)}
+								{renderComponentRow(build, "motherboard", build.motherboard)}
+								{renderComponentRow(build, "psu", build.psu)}
+								{renderComponentRow(build, "case", build.case)}
+							</div>
+						))}
 					</div>
-				))}
-			</div>
+
+					{/* Display component details when available */}
+					{componentDetails && (
+						<div className="component-details-panel">
+							<h4>{componentDetails.data.name} Details</h4>
+							<div>
+								{/* CPU specific properties */}
+								{componentDetails.type === "cpu" &&
+									componentDetails.data.manufacturer && (
+										<p>
+											<strong>Manufacturer:</strong>{" "}
+											{componentDetails.data.manufacturer}
+										</p>
+									)}
+								{componentDetails.type === "cpu" &&
+									componentDetails.data.cores && (
+										<p>
+											<strong>Cores:</strong> {componentDetails.data.cores}
+										</p>
+									)}
+								{componentDetails.type === "cpu" &&
+									componentDetails.data.baseFrequency && (
+										<p>
+											<strong>Base Frequency:</strong>{" "}
+											{componentDetails.data.baseFrequency}
+										</p>
+									)}
+								{componentDetails.type === "cpu" &&
+									componentDetails.data.tdp && (
+										<p>
+											<strong>TDP:</strong> {componentDetails.data.tdp}
+										</p>
+									)}
+
+								{/* GPU specific properties */}
+								{componentDetails.type === "gpu" &&
+									componentDetails.data.manufacturer && (
+										<p>
+											<strong>Manufacturer:</strong>{" "}
+											{componentDetails.data.manufacturer}
+										</p>
+									)}
+								{componentDetails.type === "gpu" &&
+									componentDetails.data.coreClock && (
+										<p>
+											<strong>CoreClock:</strong>{" "}
+											{componentDetails.data.coreClock}
+										</p>
+									)}
+								{componentDetails.type === "gpu" &&
+									componentDetails.data.memory && (
+										<p>
+											<strong>Memory:</strong> {componentDetails.data.memory}
+										</p>
+									)}
+								{componentDetails.type === "gpu" &&
+									componentDetails.data.tdp && (
+										<p>
+											<strong>TDP:</strong> {componentDetails.data.tdp}
+										</p>
+									)}
+
+								{/* RAM specific properties */}
+								{componentDetails.type === "ram" &&
+									componentDetails.data.manufacturer && (
+										<p>
+											<strong>Manufacturer:</strong>{" "}
+											{componentDetails.data.manufacturer}
+										</p>
+									)}
+								{componentDetails.type === "ram" &&
+									componentDetails.data.capacity && (
+										<p>
+											<strong>Capacity:</strong>{" "}
+											{componentDetails.data.capacity}
+										</p>
+									)}
+								{componentDetails.type === "ram" &&
+									componentDetails.data.speed && (
+										<p>
+											<strong>Speed:</strong> {componentDetails.data.speed}
+										</p>
+									)}
+								{componentDetails.type === "ram" &&
+									componentDetails.data.type && (
+										<p>
+											<strong>Type:</strong> {componentDetails.data.type}
+										</p>
+									)}
+								{componentDetails.type === "ram" &&
+									componentDetails.data.modules && (
+										<p>
+											<strong>Modules:</strong> {componentDetails.data.modules}
+										</p>
+									)}
+
+								{/* Storage specific properties */}
+								{componentDetails.type === "storage" &&
+									componentDetails.data.manufacturer && (
+										<p>
+											<strong>Manufacturer:</strong>{" "}
+											{componentDetails.data.manufacturer}
+										</p>
+									)}
+								{componentDetails.type === "storage" &&
+									componentDetails.data.capacity && (
+										<p>
+											<strong>Capacity:</strong>{" "}
+											{componentDetails.data.capacity}
+										</p>
+									)}
+								{componentDetails.type === "storage" &&
+									componentDetails.data.type && (
+										<p>
+											<strong>Type:</strong> {componentDetails.data.type}
+										</p>
+									)}
+								{componentDetails.type === "storage" &&
+									componentDetails.data.interface && (
+										<p>
+											<strong>Interface:</strong>{" "}
+											{componentDetails.data.interface}
+										</p>
+									)}
+
+								{/* Motherboard specific properties */}
+								{componentDetails.type === "motherboard" &&
+									componentDetails.data.manufacturer && (
+										<p>
+											<strong>Manufacturer:</strong>{" "}
+											{componentDetails.data.manufacturer}
+										</p>
+									)}
+								{componentDetails.type === "motherboard" &&
+									componentDetails.data.socket && (
+										<p>
+											<strong>Socket:</strong> {componentDetails.data.socket}
+										</p>
+									)}
+								{componentDetails.type === "motherboard" &&
+									componentDetails.data.memorySlots && (
+										<p>
+											<strong>Memory Slots:</strong>{" "}
+											{componentDetails.data.memorySlots}
+										</p>
+									)}
+								{componentDetails.type === "motherboard" &&
+									componentDetails.data.chipset && (
+										<p>
+											<strong>Chipset:</strong> {componentDetails.data.chipset}
+										</p>
+									)}
+								{componentDetails.type === "motherboard" &&
+									componentDetails.data.maxMemory && (
+										<p>
+											<strong>Max Memory:</strong>{" "}
+											{componentDetails.data.maxMemory}
+										</p>
+									)}
+
+								{/* PSU specific properties */}
+								{componentDetails.type === "psu" &&
+									componentDetails.data.manufacturer && (
+										<p>
+											<strong>Manufacturer:</strong>{" "}
+											{componentDetails.data.manufacturer}
+										</p>
+									)}
+								{componentDetails.type === "psu" &&
+									componentDetails.data.wattage && (
+										<p>
+											<strong>Wattage:</strong> {componentDetails.data.wattage}
+										</p>
+									)}
+								{componentDetails.type === "psu" &&
+									componentDetails.data.efficiency && (
+										<p>
+											<strong>Efficiency:</strong>{" "}
+											{componentDetails.data.efficiency}
+										</p>
+									)}
+								{componentDetails.type === "psu" &&
+									componentDetails.data.modular && (
+										<p>
+											<strong>Modular:</strong> {componentDetails.data.modular}
+										</p>
+									)}
+
+								{/* Case specific properties */}
+								{componentDetails.type === "case" &&
+									componentDetails.data.manufacturer && (
+										<p>
+											<strong>Manufacturer:</strong>{" "}
+											{componentDetails.data.manufacturer}
+										</p>
+									)}
+								{componentDetails.type === "case" &&
+									componentDetails.data.color && (
+										<p>
+											<strong>Color:</strong> {componentDetails.data.color}
+										</p>
+									)}
+								{componentDetails.type === "case" &&
+									componentDetails.data.dimensions && (
+										<p>
+											<strong>Dimensions:</strong>{" "}
+											{componentDetails.data.dimensions}
+										</p>
+									)}
+								{componentDetails.type === "case" &&
+									componentDetails.data.weight && (
+										<p>
+											<strong>Weight:</strong> {componentDetails.data.weight}
+										</p>
+									)}
+							</div>
+							<button onClick={() => setComponentDetails(null)}>Close</button>
+						</div>
+					)}
+				</div>
+			)}
 		</div>
 	);
 }
 
 {
+	{
+		/* <div className="container">
+			<h3>Your PCs</h3>
+
+			{loading ? (
+				<p>Loading builds...</p>
+			) : error ? (
+				<p>{error}</p>
+			) : builds.length === 0 ? (
+				<p>No builds created yet.</p>
+			) : (
+				<div className="builds-container">
+					<div className="builds-list">
+						{builds.map((build) => (
+							<div>
+								<h4>{build.name}</h4>
+								<p>{build.cpu && `CPU: ${build.cpu.name}`}</p>
+								<p>{build.gpu && `GPU: ${build.gpu.name}`}</p>
+								<p>{build.ram && `RAM: ${build.ram.name}`}</p>
+								<p>{build.storage && `Storage: ${build.storage.name}`}</p>
+								<p>
+									{build.motherboard &&
+										`Motherboard: ${build.motherboard.name}`}
+								</p>
+								<p>{build.psu && `PSU: ${build.psu.name}`}</p>
+								<p>{build.case && `Case: ${build.case.name}`}</p>
+							</div>
+						))}
+					</div>
+				</div>
+			) : (
+        {selectedBuild && }
+      )}
+		</div> */
+	}
+
 	/* <div className="container">
 			<h3>Your Custom PC Builds</h3>
 
