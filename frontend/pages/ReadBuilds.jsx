@@ -7,7 +7,9 @@ export function ReadBuilds() {
 	const [builds, setBuilds] = useState([]);
 	const [loading, setLoading] = useState(true);
 	const [error, setError] = useState(null);
+	const [selectedBuild, setSelectedBuild] = useState(null);
 	const [componentDetails, setComponentDetails] = useState(null);
+	const [deleteStatus, setDeleteStatus] = useState(null);
 
 	useEffect(() => {
 		fetchBuilds();
@@ -35,7 +37,31 @@ export function ReadBuilds() {
 		});
 	};
 
-	const renderComponentRow = (build, partType, part) => {
+	const deleteBuild = async (buildId) => {
+		try {
+			setDeleteStatus({ loading: true, buildId });
+			await axios.delete(`http://localhost:3000/api/build/${buildId}`);
+			setDeleteStatus({ success: true, buildId });
+
+			setBuilds(builds.filter((build) => build._id !== buildId));
+
+			if (selectedBuild && selectedBuild._id === buildId) {
+				setComponentDetails(null);
+			}
+
+			setTimeout(() => {
+				setDeleteStatus(null);
+			}, 3000);
+		} catch (error) {
+			console.error("Could not delete build", error);
+			setDeleteStatus({ error: "failed to delete build", buildId });
+			setTimeout(() => {
+				setDeleteStatus(null);
+			}, 3000);
+		}
+	};
+
+	const renderComponent = (build, partType, part) => {
 		if (!part) return null;
 
 		return (
@@ -76,15 +102,46 @@ export function ReadBuilds() {
 				<div className="builds-container">
 					<div className="builds-list">
 						{builds.map((build) => (
-							<div key={build._id}>
-								<h4>{build.name}</h4>
-								{renderComponentRow(build, "cpu", build.cpu)}
-								{renderComponentRow(build, "gpu", build.gpu)}
-								{renderComponentRow(build, "ram", build.ram)}
-								{renderComponentRow(build, "storage", build.storage)}
-								{renderComponentRow(build, "motherboard", build.motherboard)}
-								{renderComponentRow(build, "psu", build.psu)}
-								{renderComponentRow(build, "case", build.case)}
+							<div key={build._id} className="build-card">
+								<h3>{build.name}</h3>
+
+								<button
+									onClick={() => deleteBuild(build._id)}
+									className="delete-button"
+									disabled={
+										deleteStatus &&
+										deleteStatus.loading &&
+										deleteStatus.buildId === build._id
+									}
+								>
+									{deleteStatus &&
+									deleteStatus.loading &&
+									deleteStatus.buildId === build._id
+										? "Deleting..."
+										: "Delete"}
+								</button>
+
+								{deleteStatus &&
+									deleteStatus.success &&
+									deleteStatus.buildId === build._id && (
+										<p className="success-message">
+											Build deleted successfully!
+										</p>
+									)}
+
+								{deleteStatus &&
+									deleteStatus.error &&
+									deleteStatus.buildId === build._id && (
+										<p className="error-message">{deleteStatus.error}</p>
+									)}
+
+								{renderComponent(build, "cpu", build.cpu)}
+								{renderComponent(build, "gpu", build.gpu)}
+								{renderComponent(build, "ram", build.ram)}
+								{renderComponent(build, "storage", build.storage)}
+								{renderComponent(build, "motherboard", build.motherboard)}
+								{renderComponent(build, "psu", build.psu)}
+								{renderComponent(build, "case", build.case)}
 							</div>
 						))}
 					</div>
