@@ -10,7 +10,7 @@ const pcBuildSchema = new Schema({
 	storage: { type: Schema.Types.ObjectId, ref: "Component" },
 	motherboard: { type: Schema.Types.ObjectId, ref: "Component" },
 	case: { type: Schema.Types.ObjectId, ref: "Component" },
-	powerSupply: { type: Schema.Types.ObjectId, ref: "Component" },
+	psu: { type: Schema.Types.ObjectId, ref: "Component" },
 	createdAt: { type: Date, default: Date.now },
 	updatedAt: { type: Date, default: Date.now },
 });
