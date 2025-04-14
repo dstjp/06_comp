@@ -1,4 +1,4 @@
-import { Builder } from "../components/Builder";
+import { Builder } from "../../components/Builder";
 
 export function CreateBuilds() {
 	return (
