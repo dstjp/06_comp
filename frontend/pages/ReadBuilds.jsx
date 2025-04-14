@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 
-const URL = "http://localhost:3000/api/build/builds";
+const URL = "http://localhost:3000/api/build";
 
 export function ReadBuilds() {
 	const [builds, setBuilds] = useState([]);
@@ -19,7 +19,7 @@ export function ReadBuilds() {
 	const fetchBuilds = async () => {
 		try {
 			setLoading(true);
-			const response = await axios.get(`${URL}`);
+			const response = await axios.get(`${URL}/builds`);
 			setBuilds(response.data);
 			setLoading(false);
 		} catch (error) {
@@ -49,7 +49,7 @@ export function ReadBuilds() {
 	const confirmDelete = async (buildId) => {
 		try {
 			setDeleteStatus({ loading: true, buildId });
-			await axios.delete(`http://localhost:3000/api/build/${buildId}`);
+			await axios.delete(`${URL}/${buildId}`);
 			setDeleteStatus({ success: true, buildId });
 
 			setBuilds(builds.filter((build) => build._id !== buildId));
@@ -78,30 +78,6 @@ export function ReadBuilds() {
 			}, 3000);
 		}
 	};
-
-	/* const deleteBuild = async (buildId) => {
-		try {
-			setDeleteStatus({ loading: true, buildId });
-			await axios.delete(`http://localhost:3000/api/build/${buildId}`);
-			setDeleteStatus({ success: true, buildId });
-
-			setBuilds(builds.filter((build) => build._id !== buildId));
-
-			if (selectedBuild && selectedBuild._id === buildId) {
-				setComponentDetails(null);
-			}
-
-			setTimeout(() => {
-				setDeleteStatus(null);
-			}, 3000);
-		} catch (error) {
-			console.error("Could not delete build", error);
-			setDeleteStatus({ error: "failed to delete build", buildId });
-			setTimeout(() => {
-				setDeleteStatus(null);
-			}, 3000);
-		}
-	}; */
 
 	const renderComponent = (build, partType, part) => {
 		if (!part) return null;
