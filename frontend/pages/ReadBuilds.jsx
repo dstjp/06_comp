@@ -10,6 +10,7 @@ export function ReadBuilds() {
 	const [selectedBuild, setSelectedBuild] = useState(null);
 	const [componentDetails, setComponentDetails] = useState(null);
 	const [deleteStatus, setDeleteStatus] = useState(null);
+	const [confirmDeleteId, setConfirmDeleteId] = useState(null);
 
 	useEffect(() => {
 		fetchBuilds();
@@ -37,7 +38,48 @@ export function ReadBuilds() {
 		});
 	};
 
-	const deleteBuild = async (buildId) => {
+	const initiateDelete = (buildId) => {
+		setConfirmDeleteId(buildId);
+	};
+
+	const cancelDelete = () => {
+		setConfirmDeleteId(null);
+	};
+
+	const confirmDelete = async (buildId) => {
+		try {
+			setDeleteStatus({ loading: true, buildId });
+			await axios.delete(`http://localhost:3000/api/build/${buildId}`);
+			setDeleteStatus({ success: true, buildId });
+
+			setBuilds(builds.filter((build) => build._id !== buildId));
+
+			if (selectedBuild && selectedBuild._id === buildId) {
+				setSelectedBuild(null);
+			}
+
+			if (componentDetails && selectedBuild && selectedBuild._id === buildId) {
+				setComponentDetails(null);
+			}
+
+			setConfirmDeleteId(null);
+
+			setTimeout(() => {
+				setDeleteStatus(null);
+			}, 3000);
+		} catch (error) {
+			console.error("Could not delete build", error);
+			setDeleteStatus({ error: "Failed to delete build", buildId });
+
+			setConfirmDeleteId(null);
+
+			setTimeout(() => {
+				setDeleteStatus(null);
+			}, 3000);
+		}
+	};
+
+	/* const deleteBuild = async (buildId) => {
 		try {
 			setDeleteStatus({ loading: true, buildId });
 			await axios.delete(`http://localhost:3000/api/build/${buildId}`);
@@ -59,7 +101,7 @@ export function ReadBuilds() {
 				setDeleteStatus(null);
 			}, 3000);
 		}
-	};
+	}; */
 
 	const renderComponent = (build, partType, part) => {
 		if (!part) return null;
@@ -105,21 +147,38 @@ export function ReadBuilds() {
 							<div key={build._id} className="build-card">
 								<h3>{build.name}</h3>
 
-								<button
-									onClick={() => deleteBuild(build._id)}
-									className="delete-button"
-									disabled={
-										deleteStatus &&
+								{confirmDeleteId !== build._id && (
+									<button
+										onClick={() => initiateDelete(build._id)}
+										className="delete-button"
+										disabled={
+											deleteStatus &&
+											deleteStatus.loading &&
+											deleteStatus.buildId === build._id
+										}
+									>
+										{deleteStatus &&
 										deleteStatus.loading &&
 										deleteStatus.buildId === build._id
-									}
-								>
-									{deleteStatus &&
-									deleteStatus.loading &&
-									deleteStatus.buildId === build._id
-										? "Deleting..."
-										: "Delete"}
-								</button>
+											? "Deleting..."
+											: "Delete"}
+									</button>
+								)}
+
+								{confirmDeleteId === build._id && (
+									<div className="confirm-delete-options">
+										<span className="confirm-text">Are you sure?</span>
+										<button
+											onClick={() => confirmDelete(build._id)}
+											className="confirm-button"
+										>
+											Delete
+										</button>
+										<button onClick={cancelDelete} className="cancel-button">
+											Cancel
+										</button>
+									</div>
+								)}
 
 								{deleteStatus &&
 									deleteStatus.success &&
@@ -146,12 +205,10 @@ export function ReadBuilds() {
 						))}
 					</div>
 
-					{/* Display component details when available */}
 					{componentDetails && (
 						<div className="component-details-panel">
 							<h4>{componentDetails.data.name} Details</h4>
 							<div>
-								{/* CPU specific properties */}
 								{componentDetails.type === "cpu" &&
 									componentDetails.data.manufacturer && (
 										<p>
@@ -179,7 +236,6 @@ export function ReadBuilds() {
 										</p>
 									)}
 
-								{/* GPU specific properties */}
 								{componentDetails.type === "gpu" &&
 									componentDetails.data.manufacturer && (
 										<p>
@@ -207,7 +263,6 @@ export function ReadBuilds() {
 										</p>
 									)}
 
-								{/* RAM specific properties */}
 								{componentDetails.type === "ram" &&
 									componentDetails.data.manufacturer && (
 										<p>
@@ -241,7 +296,6 @@ export function ReadBuilds() {
 										</p>
 									)}
 
-								{/* Storage specific properties */}
 								{componentDetails.type === "storage" &&
 									componentDetails.data.manufacturer && (
 										<p>
@@ -270,7 +324,6 @@ export function ReadBuilds() {
 										</p>
 									)}
 
-								{/* Motherboard specific properties */}
 								{componentDetails.type === "motherboard" &&
 									componentDetails.data.manufacturer && (
 										<p>
@@ -305,7 +358,6 @@ export function ReadBuilds() {
 										</p>
 									)}
 
-								{/* PSU specific properties */}
 								{componentDetails.type === "psu" &&
 									componentDetails.data.manufacturer && (
 										<p>
@@ -333,7 +385,6 @@ export function ReadBuilds() {
 										</p>
 									)}
 
-								{/* Case specific properties */}
 								{componentDetails.type === "case" &&
 									componentDetails.data.manufacturer && (
 										<p>
@@ -368,152 +419,4 @@ export function ReadBuilds() {
 			)}
 		</div>
 	);
-}
-
-{
-	{
-		/* <div className="container">
-			<h3>Your PCs</h3>
-
-			{loading ? (
-				<p>Loading builds...</p>
-			) : error ? (
-				<p>{error}</p>
-			) : builds.length === 0 ? (
-				<p>No builds created yet.</p>
-			) : (
-				<div className="builds-container">
-					<div className="builds-list">
-						{builds.map((build) => (
-							<div>
-								<h4>{build.name}</h4>
-								<p>{build.cpu && `CPU: ${build.cpu.name}`}</p>
-								<p>{build.gpu && `GPU: ${build.gpu.name}`}</p>
-								<p>{build.ram && `RAM: ${build.ram.name}`}</p>
-								<p>{build.storage && `Storage: ${build.storage.name}`}</p>
-								<p>
-									{build.motherboard &&
-										`Motherboard: ${build.motherboard.name}`}
-								</p>
-								<p>{build.psu && `PSU: ${build.psu.name}`}</p>
-								<p>{build.case && `Case: ${build.case.name}`}</p>
-							</div>
-						))}
-					</div>
-				</div>
-			) : (
-        {selectedBuild && }
-      )}
-		</div> */
-	}
-
-	/* <div className="container">
-			<h3>Your Custom PC Builds</h3>
-
-			{loading ? (
-				<p>Loading your builds...</p>
-			) : error ? (
-				<p className="error">{error}</p>
-			) : builds.length === 0 ? (
-				<div className="no-builds">
-					<p>You haven't created any PC builds yet.</p>
-					<a href="/builder" className="create-build-link">
-						Create your first build
-					</a>
-				</div>
-			) : (
-				<div className="builds-container">
-					<div className="builds-list">
-						{builds.map((build) => (
-							<div
-								key={build._id}
-								className={`build-card ${
-									selectedBuild && selectedBuild._id === build._id
-										? "selected"
-										: ""
-								}`}
-								onClick={() => viewBuildDetails(build._id)}
-							>
-								<h4>{build.name}</h4>
-								<p className="build-preview">
-									{build.cpu && `CPU: ${build.cpu.name}`}
-									{build.gpu && `, GPU: ${build.gpu.name}`}
-								</p>
-							</div>
-						))}
-					</div>
-
-					{selectedBuild && (
-						<div className="build-details">
-							<h4>{selectedBuild.name}</h4>
-							<div className="component-list">
-								{selectedBuild.cpu && (
-									<div className="component-item">
-										<span className="component-type">CPU:</span>
-										<span className="component-name">
-											{selectedBuild.cpu.name}
-										</span>
-									</div>
-								)}
-								{selectedBuild.gpu && (
-									<div className="component-item">
-										<span className="component-type">GPU:</span>
-										<span className="component-name">
-											{selectedBuild.gpu.name}
-										</span>
-									</div>
-								)}
-								{selectedBuild.ram && (
-									<div className="component-item">
-										<span className="component-type">RAM:</span>
-										<span className="component-name">
-											{selectedBuild.ram.name}
-										</span>
-									</div>
-								)}
-								{selectedBuild.storage && (
-									<div className="component-item">
-										<span className="component-type">Storage:</span>
-										<span className="component-name">
-											{selectedBuild.storage.name}
-										</span>
-									</div>
-								)}
-								{selectedBuild.motherboard && (
-									<div className="component-item">
-										<span className="component-type">Motherboard:</span>
-										<span className="component-name">
-											{selectedBuild.motherboard.name}
-										</span>
-									</div>
-								)}
-								{selectedBuild.psu && (
-									<div className="component-item">
-										<span className="component-type">Power Supply:</span>
-										<span className="component-name">
-											{selectedBuild.psu.name}
-										</span>
-									</div>
-								)}
-								{selectedBuild.case && (
-									<div className="component-item">
-										<span className="component-type">Case:</span>
-										<span className="component-name">
-											{selectedBuild.case.name}
-										</span>
-									</div>
-								)}
-							</div>
-						</div>
-					)}
-				</div>
-			)}
-
-			<div className="actions">
-				<button onClick={fetchBuilds} className="refresh-button">
-					Refresh Builds
-				</button>
-			</div>
-		</div>
-	); */
 }
