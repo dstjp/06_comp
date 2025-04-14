@@ -60,7 +60,7 @@ const RAM = Component.discriminator("RAM", ramSchema);
 const Storage = Component.discriminator("Storage", storageSchema);
 const Case = Component.discriminator("Case", caseSchema);
 const Motherboard = Component.discriminator("Motherboard", motherboardSchema);
-const PowerSupply = Component.discriminator("PowerSupply", psuSchema);
+const PSU = Component.discriminator("PSU", psuSchema);
 
 module.exports = {
 	Component,
@@ -70,5 +70,5 @@ module.exports = {
 	Storage,
 	Case,
 	Motherboard,
-	PowerSupply,
+	PSU,
 };

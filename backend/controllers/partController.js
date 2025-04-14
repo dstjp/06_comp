@@ -3,10 +3,10 @@ const { Component } = require("../models/part");
 //Retrieve all parts
 exports.getComponents = async (request, response) => {
 	try {
-		const { componentType, manufacturer } = request.query;
+		const { partType, manufacturer } = request.query;
 
 		const query = {};
-		if (componentType) query.componentType = componentType;
+		if (partType) query.componentType = componentType;
 		if (manufacturer) query.manufacturer = manufacturer;
 
 		const parts = await Component.find(query);

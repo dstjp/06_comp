@@ -1,11 +1,11 @@
-/* const {
+const {
 	CPU,
 	GPU,
 	RAM,
 	Storage,
 	Case,
 	Motherboard,
-	PowerSupply,
+	PSU,
 } = require("./models/part");
 
 const cpus = [
@@ -26,10 +26,23 @@ const cpus = [
 	{
 		name: "Ryzen 5 5600X",
 		manufacturer: "AMD",
-		price: 229.99,
-		inStock: true,
+
 		cores: 6,
 		baseFrequency: "3.7 GHz",
+		tdp: 65,
+	},
+	{
+		name: "Core i9-14900K",
+		manufacturer: "Intel",
+		cores: 24,
+		baseFrequency: "3.2 GHz",
+		tdp: 125,
+	},
+	{
+		name: "Ryzen 5 7600",
+		manufacturer: "AMD",
+		cores: 6,
+		baseFrequency: "3.8 GHz",
 		tdp: 65,
 	},
 ];
@@ -56,6 +69,20 @@ const gpus = [
 		coreClock: "1500 MHz",
 		tdp: 220,
 	},
+	{
+		name: "RTX 5090",
+		manufacturer: "NVIDIA",
+		memory: "32GB",
+		coreClock: "1800 MHz",
+		tdp: 450,
+	},
+	{
+		name: "RX 8900 XT",
+		manufacturer: "AMD",
+		memory: "24GB",
+		coreClock: "2100 MHz",
+		tdp: 400,
+	},
 ];
 
 const rams = [
@@ -73,6 +100,30 @@ const rams = [
 		capacity: "32GB",
 		type: "DDR4",
 		speed: "3600MHz",
+		modules: 2,
+	},
+	{
+		name: "DDR5 ECC",
+		manufacturer: "Samsung",
+		capacity: "64GB",
+		type: "DDR5 ECC",
+		speed: "4800MHz",
+		modules: 2,
+	},
+	{
+		name: "Vengeance RGB DDR5",
+		manufacturer: "Corsair",
+		capacity: "32GB",
+		type: "DDR5",
+		speed: "6000MHz",
+		modules: 2,
+	},
+	{
+		name: "Fury Beast",
+		manufacturer: "Kingston",
+		capacity: "32GB",
+		type: "DDR5",
+		speed: "5600MHz",
 		modules: 2,
 	},
 ];
@@ -99,13 +150,26 @@ const storages = [
 		type: "NVMe",
 		interface: "PCIe 3.0 x4",
 	},
+	{
+		name: "P5 Plus",
+		manufacturer: "Crucial",
+		capacity: "1TB",
+		type: "SSD",
+		interface: "PCIe 4.0",
+	},
+	{
+		name: "KC3000",
+		manufacturer: "Kingston",
+		capacity: "1TB",
+		type: "SSD",
+		interface: "PCIe 4.0",
+	},
 ];
 
 const cases = [
 	{
 		name: "4000D Airflow",
 		manufacturer: "Corsair",
-
 		dimensions: "453mm x 230mm x 466mm",
 		weight: 7.8,
 		color: "Black",
@@ -116,6 +180,27 @@ const cases = [
 		dimensions: "428mm x 210mm x 460mm",
 		weight: 6.6,
 		color: "White",
+	},
+	{
+		name: "Meshify 2",
+		manufacturer: "Fractal Design",
+		dimensions: "388mm x 215mm x 560mm",
+		weight: 5.6,
+		color: "Blue",
+	},
+	{
+		name: "NR200P",
+		manufacturer: "Cooler Master",
+		dimensions: "376mm x 185mm x 274mm",
+		weight: 7.2,
+		color: "Black",
+	},
+	{
+		name: "Eclipse P500A",
+		manufacturer: "Phanteks",
+		dimensions: "510 x 240mm x 505mm",
+		weight: 9.6,
+		color: "Pink",
 	},
 ];
 
@@ -136,9 +221,33 @@ const motherboards = [
 		memorySlots: 4,
 		maxMemory: "128GB",
 	},
+	{
+		name: "ROG Crosshair X870E",
+		manufacturer: "ASUS",
+		socket: "AM5",
+		chipset: "X870",
+		memorySlots: 4,
+		maxMemory: "128GB",
+	},
+	{
+		name: "MPG X870 Gaming Plus",
+		manufacturer: "MSI",
+		socket: "AM5",
+		chipset: "X870",
+		memorySlots: 4,
+		maxMemory: "256GB",
+	},
+	{
+		name: "ROG Strix B750E Gaming WiFi",
+		manufacturer: "ASRock",
+		socket: "AM5",
+		chipset: "B750",
+		memorySlots: 4,
+		maxMemory: "128GB",
+	},
 ];
 
-const powerSupplies = [
+const psus = [
 	{
 		name: "RM750x",
 		manufacturer: "Corsair",
@@ -153,6 +262,27 @@ const powerSupplies = [
 		efficiency: "80+ Gold",
 		modular: "Full",
 	},
+	{
+		name: "Focus GX-850",
+		manufacturer: "Seasonic",
+		wattage: 850,
+		efficiency: "80+ Gold",
+		modular: "Full",
+	},
+	{
+		name: "MWE Gold 650 V2",
+		manufacturer: "Cooler Master",
+		wattage: 650,
+		efficiency: "80+ Gold",
+		modular: "Full",
+	},
+	{
+		name: "C750 Toughpower",
+		manufacturer: "NZXT",
+		wattage: 750,
+		efficiency: "80+ Gold",
+		modular: "Full",
+	},
 ];
 
 const seedDatabase = async () => {
@@ -163,7 +293,7 @@ const seedDatabase = async () => {
 		await Storage.insertMany(storages);
 		await Case.insertMany(cases);
 		await Motherboard.insertMany(motherboards);
-		await PowerSupply.insertMany(powerSupplies);
+		await PSU.insertMany(psus);
 
 		console.log("Database seeded successfully!");
 	} catch (error) {
@@ -172,4 +302,3 @@ const seedDatabase = async () => {
 };
 
 seedDatabase();
- */

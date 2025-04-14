@@ -14,9 +14,9 @@ export function Builder() {
 		GPU: [],
 		RAM: [],
 		Storage: [],
-		Case: [],
 		Motherboard: [],
-		PowerSupply: [],
+		PSU: [],
+		Case: [],
 	});
 
 	const [selectedComponents, setSelectedComponents] = useState({
@@ -24,37 +24,41 @@ export function Builder() {
 		cpu: "",
 		gpu: "",
 		ram: "",
-		storage: [],
+		storage: "",
 		motherboard: "",
+		psu: "",
 		case: "",
-		powerSupply: "",
 	});
 
 	useEffect(() => {
-		const fetchcomponents = async () => {
+		const fetchComponents = async () => {
 			try {
 				setLoading(true);
 
-				const response = await Promise.all([
-					axios.get(`${URL}/component?componentType=CPU`),
-					axios.get(`${URL}/component?componentType=GPU`),
-					axios.get(`${URL}/component?componentType=RAM`),
-					axios.get(`${URL}/component?componentType=Storage`),
-					axios.get(`${URL}/component?componentType=Motherboard`),
-					axios.get(`${URL}/component?componentType=Case`),
-					axios.get(`${URL}/component?componentType=PowerSupply`),
-				]);
+				// Make a single API call to get all components
+				const response = await axios.get(`${URL}/component`);
+				const allComponents = response.data;
 
-				setComponents({
-					CPU: response[0].data,
-					CPU: response[1].data,
-					CPU: response[2].data,
-					CPU: response[3].data,
-					CPU: response[4].data,
-					CPU: response[5].data,
-					CPU: response[6].data,
-				});
+				// Log to check what we're getting
+				console.log("All components:", allComponents);
 
+				// Filter components by part type
+				const categorizedComponents = {
+					CPU: allComponents.filter((comp) => comp.partType === "CPU"),
+					GPU: allComponents.filter((comp) => comp.partType === "GPU"),
+					RAM: allComponents.filter((comp) => comp.partType === "RAM"),
+					Storage: allComponents.filter((comp) => comp.partType === "Storage"),
+					Motherboard: allComponents.filter(
+						(comp) => comp.partType === "Motherboard"
+					),
+					PSU: allComponents.filter((comp) => comp.partType === "PSU"),
+					Case: allComponents.filter((comp) => comp.partType === "Case"),
+				};
+
+				// Log the categorized components to verify
+				console.log("Categorized components:", categorizedComponents);
+
+				setComponents(categorizedComponents);
 				setLoading(false);
 			} catch (error) {
 				setError("Error fetching components");
@@ -63,7 +67,7 @@ export function Builder() {
 			}
 		};
 
-		fetchcomponents();
+		fetchComponents();
 	}, []);
 
 	const handleComponentSelect = (type, componentId) => {
@@ -74,19 +78,41 @@ export function Builder() {
 			}));
 			return;
 		}
+		setSelectedComponents((prev) => ({
+			...prev,
+			[type.toLowerCase()]: componentId,
+		}));
 
 		const selectedComponent = components[type].find(
 			(comp) => comp._id === componentId
 		);
+		if (selectedComponent) {
+			setSelectedComponents((prev) => ({
+				...prev,
+				[type.toLowerCase()]: componentId,
+			}));
+		}
 	};
 
 	const savePCBuild = async () => {
 		try {
+			if (!selectedComponents.cpu || !selectedComponents.motherboard) {
+				setError(
+					"At minimum, a CPU and motherboard are required for your build."
+				);
+			}
 			const buildData = {
 				name: buildName,
-				...selectedComponents,
+				cpu: selectedComponents.cpu,
+				gpu: selectedComponents.gpu,
+				ram: selectedComponents.ram,
+				storage: selectedComponents.storage,
+				motherboard: selectedComponents.motherboard,
+				case: selectedComponents.case,
+				psu: selectedComponents.psu,
 			};
 
+			// Remove any empty values
 			Object.keys(buildData).forEach((key) => {
 				if (
 					!buildData[key] ||
@@ -96,17 +122,209 @@ export function Builder() {
 				}
 			});
 
-			const response = await axios.post(`${URL}/builds`, buildData);
+			console.log("Saving build:", buildData);
+
+			// Make the API call to save the build
+			const response = await axios.post(`${URL}/build`, buildData);
 
 			if (response.status === 201) {
-				setBuildSaved(true);
-				setTimeout(() => setBuildSaved(false), 3000); // Reset message after 3 seconds
+				setSaveBuild(true);
+				// Optionally reset form or show success message
+				setError(null);
+				setTimeout(() => setSaveBuild(false), 3000); // Hide success message after 3 seconds
 			}
 		} catch (error) {
 			setError("Error saving PC build. Please try again.");
-			console.error("Error saving build:", error);
+			console.error(
+				"Error saving build:",
+				error.response?.data || error.message
+			);
 		}
 	};
 
-	return <></>;
+	return (
+		<div className="container">
+			<h3>PC Builder</h3>
+
+			{/* Build name input */}
+			<div className="build-name-container">
+				<label htmlFor="buildName">Build Name</label>
+				<input
+					type="text"
+					id="buildName"
+					value={buildName}
+					onChange={(e) => setBuildName(e.target.value)}
+					placeholder="Enter a name for your build"
+				/>
+			</div>
+
+			{loading ? (
+				<p>Loading components...</p>
+			) : error ? (
+				<p className="error">{error}</p>
+			) : (
+				<div className="grid">
+					{/* CPU Dropdown */}
+					<div className="cpu-container">
+						<label htmlFor="cpu">CPU</label>
+						<select
+							name="cpu"
+							id="cpu"
+							value={selectedComponents.cpu}
+							onChange={(e) => handleComponentSelect("CPU", e.target.value)}
+						>
+							<option value="">Select CPU</option>
+							{components.CPU &&
+								components.CPU.map((cpu) => (
+									<option key={cpu._id} value={cpu._id}>
+										{cpu.name}
+									</option>
+								))}
+						</select>
+					</div>
+
+					{/* GPU Dropdown */}
+					<div className="gpu-container">
+						<label htmlFor="gpu">GPU</label>
+						<select
+							name="gpu"
+							id="gpu"
+							value={selectedComponents.gpu}
+							onChange={(e) => handleComponentSelect("GPU", e.target.value)}
+						>
+							<option value="">Select GPU</option>
+							{components.GPU &&
+								components.GPU.map((gpu) => (
+									<option key={gpu._id} value={gpu._id}>
+										{gpu.name}
+									</option>
+								))}
+						</select>
+					</div>
+
+					{/* RAM Dropdown */}
+					<div className="ram-container">
+						<label htmlFor="ram">RAM</label>
+						<select
+							name="ram"
+							id="ram"
+							value={selectedComponents.ram}
+							onChange={(e) => handleComponentSelect("RAM", e.target.value)}
+						>
+							<option value="">Select RAM</option>
+							{components.RAM &&
+								components.RAM.map((ram) => (
+									<option key={ram._id} value={ram._id}>
+										{ram.name}
+									</option>
+								))}
+						</select>
+					</div>
+
+					{/* Storage Dropdown */}
+					<div className="storage-container">
+						<label htmlFor="storage">Storage</label>
+						<select
+							name="storage"
+							id="storage"
+							value={selectedComponents.storage[0] || ""}
+							onChange={(e) => {
+								if (e.target.value) {
+									setSelectedComponents((prev) => ({
+										...prev,
+										storage: [e.target.value],
+									}));
+								}
+							}}
+						>
+							<option value="">Select Storage</option>
+							{components.Storage &&
+								components.Storage.map((storage) => (
+									<option key={storage._id} value={storage._id}>
+										{storage.name}
+									</option>
+								))}
+						</select>
+					</div>
+
+					{/* Motherboard Dropdown */}
+					<div className="motherboard-container">
+						<label htmlFor="motherboard">Motherboard</label>
+						<select
+							name="motherboard"
+							id="motherboard"
+							value={selectedComponents.motherboard}
+							onChange={(e) =>
+								handleComponentSelect("Motherboard", e.target.value)
+							}
+						>
+							<option value="">Select Motherboard</option>
+							{components.Motherboard &&
+								components.Motherboard.map((mobo) => (
+									<option key={mobo._id} value={mobo._id}>
+										{mobo.name}
+									</option>
+								))}
+						</select>
+					</div>
+
+					{/* Power Supply Dropdown */}
+					<div className="powersupply-container">
+						<label htmlFor="powersupply">Power Supply</label>
+						<select
+							name="powersupply"
+							id="powersupply"
+							value={selectedComponents.psu}
+							onChange={(e) => handleComponentSelect("PSU", e.target.value)}
+						>
+							<option value="">Select PSU</option>
+							{components.PSU &&
+								components.PSU.map((psu) => (
+									<option key={psu._id} value={psu._id}>
+										{psu.name}
+									</option>
+								))}
+						</select>
+						{/* Case Dropdown */}
+						<div className="case-container">
+							<label htmlFor="case">Case</label>
+							<select
+								name="case"
+								id="case"
+								value={selectedComponents.case}
+								onChange={(e) => handleComponentSelect("Case", e.target.value)}
+							>
+								<option value="">Select Case</option>
+								{components.Case &&
+									components.Case.map((caseItem) => (
+										<option key={caseItem._id} value={caseItem._id}>
+											{caseItem.name}
+										</option>
+									))}
+							</select>
+						</div>
+					</div>
+				</div>
+			)}
+
+			<div className="actions">
+				<button
+					onClick={savePCBuild}
+					disabled={
+						loading ||
+						!selectedComponents.cpu ||
+						!selectedComponents.motherboard
+					}
+					className="save-button"
+				>
+					Save PC Build
+				</button>
+
+				{saveBuild && (
+					<p className="success-message">Build saved successfully!</p>
+				)}
+				{error && <p className="error-message">{error}</p>}
+			</div>
+		</div>
+	);
 }
