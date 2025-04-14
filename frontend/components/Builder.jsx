@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 const URL = "http://localhost:3000/api";
@@ -35,14 +36,9 @@ export function Builder() {
 			try {
 				setLoading(true);
 
-				// Make a single API call to get all components
 				const response = await axios.get(`${URL}/component`);
 				const allComponents = response.data;
 
-				// Log to check what we're getting
-				console.log("All components:", allComponents);
-
-				// Filter components by part type
 				const categorizedComponents = {
 					CPU: allComponents.filter((comp) => comp.partType === "CPU"),
 					GPU: allComponents.filter((comp) => comp.partType === "GPU"),
@@ -54,9 +50,6 @@ export function Builder() {
 					PSU: allComponents.filter((comp) => comp.partType === "PSU"),
 					Case: allComponents.filter((comp) => comp.partType === "Case"),
 				};
-
-				// Log the categorized components to verify
-				console.log("Categorized components:", categorizedComponents);
 
 				setComponents(categorizedComponents);
 				setLoading(false);
@@ -94,12 +87,12 @@ export function Builder() {
 		}
 	};
 
+	const navigate = useNavigate();
+
 	const savePCBuild = async () => {
 		try {
 			if (!selectedComponents.cpu || !selectedComponents.motherboard) {
-				setError(
-					"At minimum, a CPU and motherboard are required for your build."
-				);
+				setError("CPU and Motherboard are required for your build.");
 			}
 			const buildData = {
 				name: buildName,
@@ -112,7 +105,6 @@ export function Builder() {
 				psu: selectedComponents.psu,
 			};
 
-			// Remove any empty values
 			Object.keys(buildData).forEach((key) => {
 				if (
 					!buildData[key] ||
@@ -124,14 +116,16 @@ export function Builder() {
 
 			console.log("Saving build:", buildData);
 
-			// Make the API call to save the build
 			const response = await axios.post(`${URL}/build`, buildData);
 
 			if (response.status === 201) {
 				setSaveBuild(true);
-				// Optionally reset form or show success message
 				setError(null);
-				setTimeout(() => setSaveBuild(false), 3000); // Hide success message after 3 seconds
+
+				setTimeout(() => {
+					setSaveBuild(false);
+					navigate("/build");
+				}, 3000);
 			}
 		} catch (error) {
 			setError("Error saving PC build. Please try again.");
@@ -146,7 +140,6 @@ export function Builder() {
 		<div className="container">
 			<h3>PC Builder</h3>
 
-			{/* Build name input */}
 			<div className="build-name-container">
 				<label htmlFor="buildName">Build Name</label>
 				<input
@@ -164,7 +157,6 @@ export function Builder() {
 				<p className="error">{error}</p>
 			) : (
 				<div className="grid">
-					{/* CPU Dropdown */}
 					<div className="cpu-container">
 						<label htmlFor="cpu">CPU</label>
 						<select
@@ -183,7 +175,6 @@ export function Builder() {
 						</select>
 					</div>
 
-					{/* GPU Dropdown */}
 					<div className="gpu-container">
 						<label htmlFor="gpu">GPU</label>
 						<select
@@ -202,7 +193,6 @@ export function Builder() {
 						</select>
 					</div>
 
-					{/* RAM Dropdown */}
 					<div className="ram-container">
 						<label htmlFor="ram">RAM</label>
 						<select
@@ -221,7 +211,6 @@ export function Builder() {
 						</select>
 					</div>
 
-					{/* Storage Dropdown */}
 					<div className="storage-container">
 						<label htmlFor="storage">Storage</label>
 						<select
@@ -247,7 +236,6 @@ export function Builder() {
 						</select>
 					</div>
 
-					{/* Motherboard Dropdown */}
 					<div className="motherboard-container">
 						<label htmlFor="motherboard">Motherboard</label>
 						<select
@@ -268,7 +256,6 @@ export function Builder() {
 						</select>
 					</div>
 
-					{/* Power Supply Dropdown */}
 					<div className="powersupply-container">
 						<label htmlFor="powersupply">Power Supply</label>
 						<select
@@ -285,7 +272,7 @@ export function Builder() {
 									</option>
 								))}
 						</select>
-						{/* Case Dropdown */}
+
 						<div className="case-container">
 							<label htmlFor="case">Case</label>
 							<select
