@@ -1,4 +1,4 @@
-.container {
+.hp-container {
 	margin: 0;
 }
 
@@ -14,7 +14,7 @@
 	align-items: stretch;
 }
 
-.title {
+.hp-title {
 	font-family: Kanit;
 	text-transform: uppercase;
 	font-weight: 600;

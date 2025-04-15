@@ -1,0 +1,64 @@
+.buildpc-container {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	margin: 1rem;
+}
+
+.buildpc-title {
+	font-size: 2rem;
+	font-weight: bold;
+	text-transform: uppercase;
+}
+.build-name-container {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	margin: 1rem;
+	margin-top: -1rem;
+}
+
+.build-name {
+}
+
+.user-build-name {
+	padding: 0.5rem;
+	font-size: 1rem;
+	background-color: #242424;
+	border: 1px solid rgba(255, 255, 255, 0.482);
+}
+
+.component-container {
+	display: flex;
+	flex-direction: column;
+}
+
+.component-name {
+	margin-left: 0.3rem;
+	margin-bottom: -0.25rem;
+	display: flex;
+}
+
+.select-list {
+	background-color: #242424;
+	font-size: 1.5rem;
+	margin: 0.25rem;
+	padding: 0.5rem;
+	width: 35rem;
+}
+
+.save-button-container {
+}
+
+.save-button {
+	margin: 1rem;
+	background-color: #242424;
+	border: 1px solid rgba(255, 255, 255, 0.482);
+	padding: 1rem;
+}
+
+.save-button:hover {
+	cursor: pointer;
+	transition: 0.5s ease;
+	filter: drop-shadow(1px 1px 5px rgba(26, 147, 228, 0.672));
+}
