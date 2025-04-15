@@ -1,0 +1,46 @@
+.container {
+}
+
+.title-container {
+	margin-left: 2rem;
+}
+
+.title {
+	margin-top: 3rem;
+	font-family: Kanit;
+	text-transform: uppercase;
+	font-weight: 600;
+}
+
+.top-title {
+	font-size: 12rem;
+}
+
+.bottom-title {
+	margin-top: -23rem;
+	font-size: 18.3rem;
+}
+
+.button-container {
+	display: flex;
+	justify-content: center;
+	margin-top: -16rem;
+}
+
+.create-button {
+	font-weight: 530;
+	font-size: 1.25rem;
+	padding: 1.5rem;
+	border: 2px solid white;
+	border-radius: 14px;
+	background-color: #242424;
+	opacity: 0.4;
+}
+
+.create-button:hover {
+	transition: 1s ease;
+	transform: scale(1.05);
+	opacity: 1;
+	cursor: pointer;
+	filter: drop-shadow(1px 1px 5px rgba(228, 26, 191, 0.672));
+}

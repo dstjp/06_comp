@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
-import { pageData } from "./pageData";
+import { pageData } from "../pageData";
+import "./navbar.css";
 
 export function Navbar() {
 	return (
@@ -7,7 +8,7 @@ export function Navbar() {
 			{pageData.map((page) => {
 				return (
 					<Link to={page.path}>
-						<button>{page.name}</button>
+						<button className="navbar-button">{page.name}</button>
 					</Link>
 				);
 			})}
