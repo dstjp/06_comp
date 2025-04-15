@@ -69,3 +69,28 @@
 	cursor: pointer;
 	filter: drop-shadow(1px 1px 5px rgba(228, 26, 191, 0.672));
 }
+
+@media only screen and (max-width: 1800px) {
+	.top-title {
+		font-size: 6rem;
+	}
+
+	.bottom-title {
+		margin-top: -11rem;
+		font-size: 9.2rem;
+	}
+
+	.pc-pic {
+		width: 25rem;
+	}
+
+	.text-container {
+		margin-top: 2rem;
+	}
+
+	.text {
+	}
+}
+
+@media only screen and (max-width: 955px) {
+}
