@@ -174,9 +174,9 @@ export function ReadBuilds() {
 
 					{componentDetails && (
 						<div className="component-details-panel">
-							<h4 className="component-name-details">
-								{componentDetails.data.name} Details
-							</h4>
+							<p className="component-name-details">
+								<strong>{componentDetails.data.name}</strong> Specifications
+							</p>
 							<div>
 								{componentDetails.type === "cpu" &&
 									componentDetails.data.manufacturer && (
@@ -382,7 +382,12 @@ export function ReadBuilds() {
 									)}
 							</div>
 
-							<button onClick={() => setComponentDetails(null)}>Close</button>
+							<button
+								className="specs-close-button"
+								onClick={() => setComponentDetails(null)}
+							>
+								Close
+							</button>
 						</div>
 					)}
 				</div>

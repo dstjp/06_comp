@@ -45,8 +45,30 @@
 
 /* Component Details */
 .component-details-panel {
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+	margin: 0.25rem;
+	padding: 1rem;
+	border: 1px solid white;
+	border-radius: 1rem;
+	width: 20%;
+	font-size: 1.25rem;
 }
 .component-name-details {
+}
+
+.specs-close-button {
+	background-color: #6b6a6a;
+	border-radius: 5px;
+	border: none;
+	padding: 0.5rem;
+	font-size: 1rem;
+}
+
+.specs-close-button:hover {
+	cursor: pointer;
+	background-color: rgba(201, 199, 199, 0.615);
 }
 
 /* Delete */
