@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 const URL = "http://localhost:3000/api";
@@ -87,13 +86,8 @@ export function Builder() {
 		}
 	};
 
-	const navigate = useNavigate();
-
 	const savePCBuild = async () => {
 		try {
-			if (!selectedComponents.cpu || !selectedComponents.motherboard) {
-				setError("CPU and Motherboard are required for your build.");
-			}
 			const buildData = {
 				name: buildName,
 				cpu: selectedComponents.cpu,
@@ -124,7 +118,6 @@ export function Builder() {
 
 				setTimeout(() => {
 					setSaveBuild(false);
-					navigate("/build");
 				}, 3000);
 			}
 		} catch (error) {
@@ -137,12 +130,15 @@ export function Builder() {
 	};
 
 	return (
-		<div className="container">
-			<h3>PC Builder</h3>
+		<div className="buildpc-container">
+			<p className="buildpc-title">Build Your PC</p>
 
 			<div className="build-name-container">
-				<label htmlFor="buildName">Build Name</label>
+				<label className="build-name" htmlFor="buildName">
+					Build Name
+				</label>
 				<input
+					className="user-build-name"
 					type="text"
 					id="buildName"
 					value={buildName}
@@ -156,16 +152,19 @@ export function Builder() {
 			) : error ? (
 				<p className="error">{error}</p>
 			) : (
-				<div className="grid">
+				<div className="component-container">
 					<div className="cpu-container">
-						<label htmlFor="cpu">CPU</label>
+						<label className="component-name" htmlFor="cpu">
+							CPU
+						</label>
 						<select
+							className="select-list"
 							name="cpu"
 							id="cpu"
 							value={selectedComponents.cpu}
 							onChange={(e) => handleComponentSelect("CPU", e.target.value)}
 						>
-							<option value="">Select CPU</option>
+							<option value=""></option>
 							{components.CPU &&
 								components.CPU.map((cpu) => (
 									<option key={cpu._id} value={cpu._id}>
@@ -176,14 +175,17 @@ export function Builder() {
 					</div>
 
 					<div className="gpu-container">
-						<label htmlFor="gpu">GPU</label>
+						<label className="component-name" htmlFor="gpu">
+							GPU
+						</label>
 						<select
+							className="select-list"
 							name="gpu"
 							id="gpu"
 							value={selectedComponents.gpu}
 							onChange={(e) => handleComponentSelect("GPU", e.target.value)}
 						>
-							<option value="">Select GPU</option>
+							<option value=""></option>
 							{components.GPU &&
 								components.GPU.map((gpu) => (
 									<option key={gpu._id} value={gpu._id}>
@@ -194,14 +196,17 @@ export function Builder() {
 					</div>
 
 					<div className="ram-container">
-						<label htmlFor="ram">RAM</label>
+						<label className="component-name" htmlFor="ram">
+							RAM
+						</label>
 						<select
+							className="select-list"
 							name="ram"
 							id="ram"
 							value={selectedComponents.ram}
 							onChange={(e) => handleComponentSelect("RAM", e.target.value)}
 						>
-							<option value="">Select RAM</option>
+							<option value=""></option>
 							{components.RAM &&
 								components.RAM.map((ram) => (
 									<option key={ram._id} value={ram._id}>
@@ -212,21 +217,17 @@ export function Builder() {
 					</div>
 
 					<div className="storage-container">
-						<label htmlFor="storage">Storage</label>
+						<label className="component-name" htmlFor="storage">
+							Storage
+						</label>
 						<select
+							className="select-list"
 							name="storage"
 							id="storage"
-							value={selectedComponents.storage[0] || ""}
-							onChange={(e) => {
-								if (e.target.value) {
-									setSelectedComponents((prev) => ({
-										...prev,
-										storage: [e.target.value],
-									}));
-								}
-							}}
+							value={selectedComponents.storage}
+							onChange={(e) => handleComponentSelect("Storage", e.target.value)}
 						>
-							<option value="">Select Storage</option>
+							<option value=""></option>
 							{components.Storage &&
 								components.Storage.map((storage) => (
 									<option key={storage._id} value={storage._id}>
@@ -237,8 +238,11 @@ export function Builder() {
 					</div>
 
 					<div className="motherboard-container">
-						<label htmlFor="motherboard">Motherboard</label>
+						<label className="component-name" htmlFor="motherboard">
+							Motherboard
+						</label>
 						<select
+							className="select-list"
 							name="motherboard"
 							id="motherboard"
 							value={selectedComponents.motherboard}
@@ -246,7 +250,7 @@ export function Builder() {
 								handleComponentSelect("Motherboard", e.target.value)
 							}
 						>
-							<option value="">Select Motherboard</option>
+							<option value=""></option>
 							{components.Motherboard &&
 								components.Motherboard.map((mobo) => (
 									<option key={mobo._id} value={mobo._id}>
@@ -257,14 +261,17 @@ export function Builder() {
 					</div>
 
 					<div className="powersupply-container">
-						<label htmlFor="powersupply">Power Supply</label>
+						<label className="component-name" htmlFor="powersupply">
+							Power Supply
+						</label>
 						<select
+							className="select-list"
 							name="powersupply"
 							id="powersupply"
 							value={selectedComponents.psu}
 							onChange={(e) => handleComponentSelect("PSU", e.target.value)}
 						>
-							<option value="">Select PSU</option>
+							<option value=""></option>
 							{components.PSU &&
 								components.PSU.map((psu) => (
 									<option key={psu._id} value={psu._id}>
@@ -274,14 +281,17 @@ export function Builder() {
 						</select>
 
 						<div className="case-container">
-							<label htmlFor="case">Case</label>
+							<label className="component-name" htmlFor="case">
+								Case
+							</label>
 							<select
+								className="select-list"
 								name="case"
 								id="case"
 								value={selectedComponents.case}
 								onChange={(e) => handleComponentSelect("Case", e.target.value)}
 							>
-								<option value="">Select Case</option>
+								<option value=""></option>
 								{components.Case &&
 									components.Case.map((caseItem) => (
 										<option key={caseItem._id} value={caseItem._id}>
@@ -294,13 +304,18 @@ export function Builder() {
 				</div>
 			)}
 
-			<div className="actions">
+			<div className="save-button-container">
 				<button
 					onClick={savePCBuild}
 					disabled={
 						loading ||
 						!selectedComponents.cpu ||
-						!selectedComponents.motherboard
+						!selectedComponents.gpu ||
+						!selectedComponents.ram ||
+						!selectedComponents.motherboard ||
+						!selectedComponents.storage ||
+						!selectedComponents.psu ||
+						!selectedComponents.case
 					}
 					className="save-button"
 				>
@@ -308,7 +323,7 @@ export function Builder() {
 				</button>
 
 				{saveBuild && (
-					<p className="success-message">Build saved successfully!</p>
+					<p className="create-success-message">Build saved successfully!</p>
 				)}
 				{error && <p className="error-message">{error}</p>}
 			</div>
