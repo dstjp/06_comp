@@ -323,7 +323,7 @@ export function Builder() {
 				</button>
 
 				{saveBuild && (
-					<p className="success-message">Build saved successfully!</p>
+					<p className="create-success-message">Build saved successfully!</p>
 				)}
 				{error && <p className="error-message">{error}</p>}
 			</div>

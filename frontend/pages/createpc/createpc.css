@@ -48,6 +48,11 @@
 	width: 35rem;
 }
 
+.save-button-container {
+	display: flex;
+	flex-direction: column;
+}
+
 .save-button {
 	margin: 1rem;
 	background-color: #242424;
