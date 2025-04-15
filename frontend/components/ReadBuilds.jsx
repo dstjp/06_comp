@@ -25,7 +25,7 @@ export function ReadBuilds() {
 		} catch (error) {
 			setError("Error fetching PC builds");
 			setLoading(false);
-			console.error("Error fetching builds:", error);
+			console.error("Error fetching builds", error);
 		}
 	};
 
@@ -85,7 +85,6 @@ export function ReadBuilds() {
 		return (
 			<p
 				onClick={() => showComponentDetails(partType, part)}
-				style={{ cursor: "pointer" }}
 				key={`${build._id}-${partType}`}
 			>
 				{getComponentLabel(partType)}: {part.name}
@@ -103,12 +102,12 @@ export function ReadBuilds() {
 			psu: "PSU",
 			case: "Case",
 		};
-		return labels[type] || type.toUpperCase();
+		return <strong className="component-label ">{labels[type]}</strong>;
 	};
 
 	return (
-		<div className="container">
-			<h3>Your PCs</h3>
+		<div className="viewpc-container">
+			<h3 className="viewpc-title">YOUR PCs</h3>
 
 			{loading ? (
 				<p>Loading builds...</p>
@@ -117,12 +116,20 @@ export function ReadBuilds() {
 			) : builds.length === 0 ? (
 				<p>No builds created yet.</p>
 			) : (
-				<div className="builds-container">
-					<div className="builds-list">
+				<div className="viewbuilds-container">
+					<div className="viewbuilds-list">
 						{builds.map((build) => (
-							<div key={build._id} className="build-card">
-								<h3>{build.name}</h3>
-
+							<div key={build._id} className="viewbuild-card">
+								<h3 className="viewbuild-name">{build.name}</h3>
+								<div className="viewbuild-grid">
+									{renderComponent(build, "cpu", build.cpu)}
+									{renderComponent(build, "gpu", build.gpu)}
+									{renderComponent(build, "ram", build.ram)}
+									{renderComponent(build, "storage", build.storage)}
+									{renderComponent(build, "motherboard", build.motherboard)}
+									{renderComponent(build, "psu", build.psu)}
+									{renderComponent(build, "case", build.case)}
+								</div>
 								{confirmDeleteId !== build._id && (
 									<button
 										onClick={() => initiateDelete(build._id)}
@@ -157,33 +164,19 @@ export function ReadBuilds() {
 								)}
 
 								{deleteStatus &&
-									deleteStatus.success &&
-									deleteStatus.buildId === build._id && (
-										<p className="success-message">
-											Build deleted successfully!
-										</p>
-									)}
-
-								{deleteStatus &&
 									deleteStatus.error &&
 									deleteStatus.buildId === build._id && (
 										<p className="error-message">{deleteStatus.error}</p>
 									)}
-
-								{renderComponent(build, "cpu", build.cpu)}
-								{renderComponent(build, "gpu", build.gpu)}
-								{renderComponent(build, "ram", build.ram)}
-								{renderComponent(build, "storage", build.storage)}
-								{renderComponent(build, "motherboard", build.motherboard)}
-								{renderComponent(build, "psu", build.psu)}
-								{renderComponent(build, "case", build.case)}
 							</div>
 						))}
 					</div>
 
 					{componentDetails && (
 						<div className="component-details-panel">
-							<h4>{componentDetails.data.name} Details</h4>
+							<h4 className="component-name-details">
+								{componentDetails.data.name} Details
+							</h4>
 							<div>
 								{componentDetails.type === "cpu" &&
 									componentDetails.data.manufacturer && (
@@ -388,6 +381,7 @@ export function ReadBuilds() {
 										</p>
 									)}
 							</div>
+
 							<button onClick={() => setComponentDetails(null)}>Close</button>
 						</div>
 					)}
