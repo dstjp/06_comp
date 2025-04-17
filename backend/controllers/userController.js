@@ -69,7 +69,7 @@ exports.loginUser = async (request, response) => {
 // Get user details
 exports.getUser = async (request, response) => {
 	try {
-		const userId = request.userData.userId; // From auth middleware
+		const userId = request.userData.userId;
 		const user = await User.findById(userId).select("-password");
 
 		if (!user) {

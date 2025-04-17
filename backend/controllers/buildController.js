@@ -18,27 +18,15 @@ exports.createBuild = async (request, response) => {
 
 		const parts = await Component.find({
 			_id: {
-				$in: [
-					cpu,
-					gpu,
-					ram,
-					...(Array.isArray(storage) ? storage : [storage]),
-					motherboard,
-					compCase,
-					psu,
-				].filter((id) => id),
+				$in: [cpu, gpu, ram, storage, motherboard, compCase, psu].filter(
+					(id) => id
+				),
 			},
 		});
 
 		const checkParts = [cpu, gpu, ram, motherboard, compCase, psu].filter(
 			(id) => id
 		);
-
-		if (Array.isArray(storage)) {
-			checkParts.push(...storage.filter((id) => id));
-		} else if (storage) {
-			checkParts.push(storage);
-		}
 
 		const foundIds = parts.map((c) => c._id.toString());
 		const missingParts = checkParts.filter(
@@ -57,7 +45,7 @@ exports.createBuild = async (request, response) => {
 			cpu,
 			gpu,
 			ram,
-			storage: Array.isArray(storage) ? storage : storage ? [storage] : [],
+			storage,
 			motherboard,
 			case: compCase,
 			psu,
@@ -173,16 +161,10 @@ exports.updateBuild = async (request, response) => {
 		if (psu) checkParts.push(psu);
 		if (compCase) checkParts.push(compCase);
 
-		if (Array.isArray(storage)) {
-			checkParts.push(...storage.filter((id) => id));
-		} else if (storage) {
-			checkParts.push(storage);
-		}
-
 		if (checkParts.length > 0) {
 			const parts = await Component.find({ _id: { $in: checkParts } });
 
-			const foundIds = getComponents.map((c) => c._id.toString());
+			const foundIds = parts.map((c) => c._id.toString());
 			const missingParts = checkParts.filter(
 				(id) => !foundIds.includes(id.toString())
 			);

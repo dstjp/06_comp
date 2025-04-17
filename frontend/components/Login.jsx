@@ -38,7 +38,7 @@ export function Login() {
 			const data = await response.json();
 
 			if (response.ok) {
-				login(data.token); // Use the auth context to set the token
+				login(data.token);
 				navigate("/home");
 			} else {
 				throw new Error(data.message || "Login failed");
