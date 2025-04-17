@@ -1,0 +1,82 @@
+.login-container {
+	top: 0;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+}
+
+.login-title {
+	font-size: 3.5rem;
+	text-transform: uppercase;
+}
+
+.login-form-container {
+	display: flex;
+	flex-direction: column;
+	border: 1px solid rgba(255, 255, 255, 0.557);
+	padding: 2rem;
+
+	border-radius: 1rem;
+}
+
+.login-form {
+	display: flex;
+	align-items: center;
+	margin-top: 0.5rem;
+}
+
+.login-label {
+	font-size: 2rem;
+}
+
+.login-input {
+	font-size: 1rem;
+	background-color: transparent;
+	border: 1px solid rgba(255, 255, 255, 0.519);
+	padding: 1rem;
+}
+
+.username-input {
+	margin-bottom: 0.5rem;
+}
+
+.login-submit-button {
+	margin-top: 1rem;
+	font-size: 1rem;
+	padding: 0.85rem;
+	background-color: #242424;
+	border: 1px solid rgba(255, 255, 255, 0.549);
+}
+
+.login-submit-button:hover {
+	cursor: pointer;
+	background-color: rgba(255, 255, 255, 0.896);
+	color: black;
+}
+
+.change-view-container {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+
+.change-view-button {
+	margin: 2rem;
+	font-size: 1rem;
+	padding: 0.85rem;
+	background-color: #242424;
+	border: 1px solid rgba(255, 255, 255, 0.549);
+}
+
+.change-view-button:hover {
+	cursor: pointer;
+	background-color: rgba(255, 255, 255, 0.896);
+	color: black;
+}
+
+.login-error-message,
+.ca-success-message {
+	font-size: 1.5rem;
+	margin: 2rem;
+}

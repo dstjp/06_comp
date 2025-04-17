@@ -120,7 +120,9 @@ export function ReadBuilds() {
 			) : error ? (
 				<p>{error}</p>
 			) : builds.length === 0 ? (
-				<p>No builds created yet.</p>
+				<div className="no-build-created-container">
+					<p className="no-build-created-message">No builds created yet</p>
+				</div>
 			) : (
 				<div className="viewbuilds-container">
 					<div className="viewbuilds-list">
@@ -181,7 +183,10 @@ export function ReadBuilds() {
 					{componentDetails && (
 						<div className="component-details-panel">
 							<p className="component-name-details">
-								<strong>{componentDetails.data.name}</strong> Specifications
+								<strong className="component-name-details-highlight">
+									{componentDetails.data.name}
+								</strong>{" "}
+								Specifications
 							</p>
 							<div>
 								{componentDetails.type === "cpu" &&

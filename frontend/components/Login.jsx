@@ -43,22 +43,23 @@ export function Login() {
 			} else {
 				throw new Error(data.message || "Login failed");
 			}
-		} catch (err) {
-			setError(err.message);
+		} catch (error) {
+			setError(error.message);
 		} finally {
 			setIsLoading(false);
 		}
 	}
 
 	return (
-		<div className="auth-form-container">
-			<h2>Login</h2>
-			{error && <p className="error-message">{error}</p>}
+		<div className="login-container">
+			<h2 className="login-title">Login</h2>
+			{error && <p className="login-error-message">{error}</p>}
 
-			<form onSubmit={handleSubmit}>
-				<div className="form-group">
-					<label htmlFor="login-email">Email</label>
+			<form className="login-form-container" onSubmit={handleSubmit}>
+				<div className="login-form">
+					<label className="login-label" htmlFor="login-email"></label>
 					<input
+						className="email-input login-input"
 						type="email"
 						id="login-email"
 						name="email"
@@ -69,9 +70,10 @@ export function Login() {
 					/>
 				</div>
 
-				<div className="form-group">
-					<label htmlFor="login-password">Password</label>
+				<div className="login-form">
+					<label className="login-label" htmlFor="login-password"></label>
 					<input
+						className="login-input"
 						type="password"
 						id="login-password"
 						name="password"
@@ -81,8 +83,11 @@ export function Login() {
 						required
 					/>
 				</div>
-
-				<button type="submit" className="submit-btn" disabled={isLoading}>
+				<button
+					type="submit"
+					className="login-submit-button"
+					disabled={isLoading}
+				>
 					{isLoading ? "Logging in..." : "Login"}
 				</button>
 			</form>

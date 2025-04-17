@@ -43,19 +43,19 @@ export function CreateUser() {
 	}
 
 	return (
-		<div className="auth-form-container">
-			<h2>Create Account</h2>
+		<div className="login-container">
+			<h2 className="login-title">Create Account</h2>
 			{error && <p className="error-message">{error}</p>}
 			{success && (
-				<p className="success-message">
+				<p className="ca-success-message">
 					Account created successfully! You can now log in.
 				</p>
 			)}
 
-			<form onSubmit={handleSubmit}>
-				<div className="form-group">
-					<label htmlFor="username">Username</label>
+			<form className="login-form-container" onSubmit={handleSubmit}>
+				<div className="login-form">
 					<input
+						className="username-input login-input"
 						type="text"
 						id="username"
 						name="username"
@@ -68,8 +68,8 @@ export function CreateUser() {
 				</div>
 
 				<div className="form-group">
-					<label htmlFor="email">Email</label>
 					<input
+						className="login-input"
 						type="email"
 						id="email"
 						name="email"
@@ -81,9 +81,9 @@ export function CreateUser() {
 					/>
 				</div>
 
-				<div className="form-group">
-					<label htmlFor="password">Password</label>
+				<div className="login-form">
 					<input
+						className="login-input"
 						type="password"
 						id="password"
 						name="password"
@@ -95,7 +95,7 @@ export function CreateUser() {
 					/>
 				</div>
 
-				<button type="submit" className="submit-btn">
+				<button type="submit" className="login-submit-button">
 					Create Account
 				</button>
 			</form>

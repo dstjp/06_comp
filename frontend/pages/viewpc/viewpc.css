@@ -5,7 +5,7 @@
 .viewpc-title {
 	display: flex;
 	justify-content: center;
-	font-size: 2rem;
+	font-size: 3rem;
 	font-weight: bold;
 }
 .viewbuilds-list {
@@ -24,7 +24,12 @@
 	border-radius: 1rem;
 }
 
+.viewbuild-name {
+	font-size: 2.5rem;
+}
+
 .viewbuild-card p {
+	font-size: 2rem;
 	margin: 0.15rem;
 }
 
@@ -43,7 +48,6 @@
 	text-transform: uppercase;
 }
 
-/* Component Details */
 .component-details-panel {
 	display: flex;
 	flex-direction: column;
@@ -53,9 +57,15 @@
 	border: 1px solid white;
 	border-radius: 1rem;
 	width: 20%;
-	font-size: 1.25rem;
+	font-size: 1.5rem;
 }
 .component-name-details {
+	font-size: 1.75rem;
+	margin-bottom: -0.5rem;
+}
+
+.component-name-details-highlight {
+	color: rgb(173, 173, 187);
 }
 
 .specs-close-button {
@@ -71,7 +81,6 @@
 	background-color: rgba(201, 199, 199, 0.615);
 }
 
-/* Delete */
 .delete-button {
 	margin-top: 0.5rem;
 	background-color: #6b6a6a;
@@ -93,6 +102,7 @@
 	align-items: center;
 }
 .confirm-text {
+	font-size: 1.5rem;
 	margin-right: 0.5rem;
 }
 .confirm-button {
@@ -100,6 +110,7 @@
 	background-color: #6b6a6a;
 	border: none;
 	border-radius: 5px;
+	font-size: 1rem;
 	padding: 0.5rem;
 }
 
@@ -109,6 +120,7 @@
 }
 .cancel-button {
 	background-color: #6b6a6a;
+	font-size: 1rem;
 	border: none;
 	border-radius: 5px;
 	padding: 0.5rem;
@@ -118,5 +130,13 @@
 	cursor: pointer;
 	background-color: rgba(201, 199, 199, 0.615);
 }
-.success-message {
+
+.no-build-created-container {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+
+.no-build-created-message {
+	font-size: 2rem;
 }
