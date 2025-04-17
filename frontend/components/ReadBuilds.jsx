@@ -1,9 +1,11 @@
 import { useState, useEffect } from "react";
+import { useAuth } from "./AuthContext";
 import axios from "axios";
 
 const URL = "http://localhost:3000/api/build";
 
 export function ReadBuilds() {
+	const { user, token } = useAuth();
 	const [builds, setBuilds] = useState([]);
 	const [loading, setLoading] = useState(true);
 	const [error, setError] = useState(null);
@@ -19,7 +21,11 @@ export function ReadBuilds() {
 	const fetchBuilds = async () => {
 		try {
 			setLoading(true);
-			const response = await axios.get(`${URL}/builds`);
+			const response = await axios.get(`${URL}/user/${user._id}`, {
+				headers: {
+					Authorization: `Bearer ${token}`,
+				},
+			});
 			setBuilds(response.data);
 			setLoading(false);
 		} catch (error) {

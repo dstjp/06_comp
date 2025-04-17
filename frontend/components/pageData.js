@@ -1,7 +1,7 @@
 export const pageData = [
 	{
 		name: "Home",
-		path: "/",
+		path: "/home",
 	},
 	{
 		name: "Create PC",

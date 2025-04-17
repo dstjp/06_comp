@@ -1,9 +1,11 @@
 import { useState, useEffect } from "react";
+import { useAuth } from "./AuthContext";
 import axios from "axios";
 
 const URL = "http://localhost:3000/api";
 
 export function Builder() {
+	const { user, token } = useAuth();
 	const [loading, setLoading] = useState(true);
 	const [error, setError] = useState(null);
 	const [saveBuild, setSaveBuild] = useState(false);
@@ -35,7 +37,11 @@ export function Builder() {
 			try {
 				setLoading(true);
 
-				const response = await axios.get(`${URL}/component`);
+				const response = await axios.get(`${URL}/component`, {
+					headers: {
+						Authorization: `Bearer ${token}`, // Add authentication header
+					},
+				});
 				const allComponents = response.data;
 
 				const categorizedComponents = {
@@ -90,6 +96,7 @@ export function Builder() {
 		try {
 			const buildData = {
 				name: buildName,
+				userId: user._id,
 				cpu: selectedComponents.cpu,
 				gpu: selectedComponents.gpu,
 				ram: selectedComponents.ram,
@@ -110,7 +117,12 @@ export function Builder() {
 
 			console.log("Saving build:", buildData);
 
-			const response = await axios.post(`${URL}/build`, buildData);
+			const response = await axios.post(`${URL}/build`, buildData, {
+				headers: {
+					"Content-Type": "application/json",
+					Authorization: `Bearer ${token}`, // Add authentication header
+				},
+			});
 
 			if (response.status === 201) {
 				setSaveBuild(true);
@@ -325,7 +337,6 @@ export function Builder() {
 				{saveBuild && (
 					<p className="create-success-message">Build saved successfully!</p>
 				)}
-				{error && <p className="error-message">{error}</p>}
 			</div>
 		</div>
 	);
