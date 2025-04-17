@@ -45,13 +45,13 @@ exports.loginUser = async (request, response) => {
 		// Find user
 		const user = await User.findOne({ email });
 		if (!user) {
-			return response.status(401).json({ message: "Authentication failed" });
+			return response.status(401).json({ message: "Login failed" });
 		}
 
 		// Check password
 		const isPasswordValid = await bcrypt.compare(password, user.password);
 		if (!isPasswordValid) {
-			return response.status(401).json({ message: "Authentication failed" });
+			return response.status(401).json({ message: "Login failed" });
 		}
 
 		// Generate token
@@ -65,7 +65,7 @@ exports.loginUser = async (request, response) => {
 	} catch (error) {
 		response
 			.status(500)
-			.json({ message: "Something went wrong", error: error.message });
+			.json({ message: "Server Error", error: error.message });
 	}
 };
 
