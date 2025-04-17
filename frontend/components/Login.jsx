@@ -1,8 +1,9 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../components/AuthContext";
 
 export function Login() {
-	const [credentials, setCredentials] = useState({
+	const [user, setUser] = useState({
 		email: "",
 		password: "",
 	});
@@ -10,10 +11,11 @@ export function Login() {
 	const [isLoading, setIsLoading] = useState(false);
 
 	const navigate = useNavigate();
+	const { login } = useAuth();
 
 	function handleChange(e) {
 		const { name, value } = e.target;
-		setCredentials((user) => ({
+		setUser((user) => ({
 			...user,
 			[name]: value,
 		}));
@@ -30,18 +32,17 @@ export function Login() {
 				headers: {
 					"Content-Type": "application/json",
 				},
-				body: JSON.stringify(credentials),
+				body: JSON.stringify(user),
 			});
 
 			const data = await response.json();
 
 			if (response.ok) {
+				login(data.token); // Use the auth context to set the token
 				navigate("/home");
 			} else {
 				throw new Error(data.message || "Login failed");
 			}
-
-			localStorage.setItem("token", data.token);
 		} catch (err) {
 			setError(err.message);
 		} finally {
@@ -61,7 +62,7 @@ export function Login() {
 						type="email"
 						id="login-email"
 						name="email"
-						value={credentials.email}
+						value={user.email}
 						onChange={handleChange}
 						placeholder="Email"
 						required
@@ -74,7 +75,7 @@ export function Login() {
 						type="password"
 						id="login-password"
 						name="password"
-						value={credentials.password}
+						value={user.password}
 						onChange={handleChange}
 						placeholder="Password"
 						required

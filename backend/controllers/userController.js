@@ -42,19 +42,16 @@ exports.loginUser = async (request, response) => {
 	try {
 		const { email, password } = request.body;
 
-		// Find user
 		const user = await User.findOne({ email });
 		if (!user) {
 			return response.status(401).json({ message: "Login failed" });
 		}
 
-		// Check password
 		const isPasswordValid = await bcrypt.compare(password, user.password);
 		if (!isPasswordValid) {
 			return response.status(401).json({ message: "Login failed" });
 		}
 
-		// Generate token
 		const token = jwt.sign(
 			{ userId: user._id, email: user.email },
 			SECRET_KEY,
