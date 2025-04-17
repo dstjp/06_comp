@@ -131,12 +131,12 @@
 	background-color: rgba(201, 199, 199, 0.615);
 }
 
-.no-build-created-container {
+.rb-error-handling-container {
 	display: flex;
 	flex-direction: column;
 	align-items: center;
 }
 
-.no-build-created-message {
+.rb-error-handling-message {
 	font-size: 2rem;
 }

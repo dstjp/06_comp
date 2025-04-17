@@ -108,7 +108,7 @@ export function ReadBuilds() {
 			psu: "PSU",
 			case: "Case",
 		};
-		return <strong className="component-label ">{labels[type]}</strong>;
+		return <strong className="component-label">{labels[type]}</strong>;
 	};
 
 	return (
@@ -116,12 +116,16 @@ export function ReadBuilds() {
 			<h3 className="viewpc-title">YOUR PCs</h3>
 
 			{loading ? (
-				<p>Loading builds...</p>
+				<div className="rb-error-handling-container">
+					<p className="rb-error-handling-message">Loading builds...</p>
+				</div>
 			) : error ? (
-				<p>{error}</p>
+				<div className="rb-error-handling-container">
+					<p className="rb-error-handling-message">{error}</p>
+				</div>
 			) : builds.length === 0 ? (
-				<div className="no-build-created-container">
-					<p className="no-build-created-message">No builds created yet</p>
+				<div className="rb-error-handling-container">
+					<p className="rb-error-handling-message">No builds created yet</p>
 				</div>
 			) : (
 				<div className="viewbuilds-container">

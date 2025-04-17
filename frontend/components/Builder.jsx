@@ -39,7 +39,7 @@ export function Builder() {
 
 				const response = await axios.get(`${URL}/component`, {
 					headers: {
-						Authorization: `Bearer ${token}`, // Add authentication header
+						Authorization: `Bearer ${token}`,
 					},
 				});
 				const allComponents = response.data;
