@@ -5,8 +5,9 @@
 }
 
 .lp-title {
-	font-family: Bungee Spice;
+	font-family: Nabla;
 	font-size: 6rem;
+	text-transform: uppercase;
 }
 
 .login-container {
@@ -18,7 +19,7 @@
 }
 
 .login-title {
-	font-size: 3.5rem;
+	font-size: 2rem;
 	text-transform: uppercase;
 }
 
