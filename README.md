@@ -34,9 +34,7 @@ Run the following command:
 npm i
 ```
 
-This script installs dependencies for both the frontend and backend folders.
-
-Alternatively, you can manually install dependencies for each part:
+Then install dependencides for each part.
 
 ```bash
 # Install backend dependencies
@@ -48,7 +46,7 @@ cd frontend
 npm install
 ```
 
-3. Create a config.env file in the backend folder
+3. Create a config.env file in the backend folder.
 
 - `MONGO_URI=yourmongouri`
 - `PORT=portnumber`
