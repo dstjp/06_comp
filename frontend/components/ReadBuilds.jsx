@@ -15,22 +15,31 @@ export function ReadBuilds() {
 	const [confirmDeleteId, setConfirmDeleteId] = useState(null);
 
 	useEffect(() => {
-		const fetchBuilds = async () => {
-			try {
-				const response = await axios.get(`${URL}/user/${user._id}`, {
-					headers: {
-						Authorization: `Bearer ${token}`,
-					},
-				});
-				setBuilds(response.data);
-				setLoading(false);
-			} catch (error) {
-				setError("Error fetching PC builds");
-				setLoading(false);
-			}
-		};
+		if (user && token) {
+			fetchBuilds();
+		} else if (token && !user) {
+			setLoading(true);
+		} else {
+			setLoading(false);
+			setError("Authentication required. Please log in.");
+		}
+	}, [user, token]);
+
+	const fetchBuilds = async () => {
+		try {
+			const response = await axios.get(`${URL}/user/${user._id}`, {
+				headers: {
+					Authorization: `Bearer ${token}`,
+				},
+			});
+			setBuilds(response.data);
+			setLoading(false);
+		} catch (error) {
+			setError("Error fetching PC builds");
+			setLoading(false);
+		}
 		fetchBuilds();
-	}, []);
+	};
 
 	const showComponentDetails = (partType, part) => {
 		if (!part) return;
