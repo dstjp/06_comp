@@ -54,18 +54,17 @@
 	font-weight: 530;
 	font-size: 1.25rem;
 	text-decoration: none;
-	color: white;
+	color: rgb(255, 255, 255);
 	padding: 1.5rem;
-	border: 2px solid white;
+	border: 2px solid rgb(255, 255, 255);
 	border-radius: 14px;
 	background-color: #242424;
-	opacity: 0.4;
 }
 
 .create-button:hover {
 	transition: 1s ease;
 	transform: scale(1.05);
-	opacity: 1;
+	opacity: 0.6;
 	cursor: pointer;
 	filter: drop-shadow(1px 1px 5px rgba(228, 26, 191, 0.672));
 }

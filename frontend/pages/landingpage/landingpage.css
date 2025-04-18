@@ -1,3 +1,14 @@
+.lp-container {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+
+.lp-title {
+	font-family: Bungee Spice;
+	font-size: 6rem;
+}
+
 .login-container {
 	top: 0;
 	display: flex;

@@ -7,22 +7,31 @@ export function Landingpage() {
 	const [view, setView] = useState(0);
 
 	return (
-		<div className="change-view-container">
-			{!view ? (
-				<>
-					<Login />
-					<button className="change-view-button" onClick={() => setView(!view)}>
-						Create New Account
-					</button>
-				</>
-			) : (
-				<>
-					<CreateUser />
-					<button className="change-view-button" onClick={() => setView(!view)}>
-						Login
-					</button>
-				</>
-			)}
+		<div className="lp-container">
+			<h1 className="lp-title">PC Builder</h1>
+			<div className="change-view-container">
+				{!view ? (
+					<>
+						<Login />
+						<button
+							className="change-view-button"
+							onClick={() => setView(!view)}
+						>
+							Create New Account
+						</button>
+					</>
+				) : (
+					<>
+						<CreateUser />
+						<button
+							className="change-view-button"
+							onClick={() => setView(!view)}
+						>
+							Login
+						</button>
+					</>
+				)}
+			</div>
 		</div>
 	);
 }
