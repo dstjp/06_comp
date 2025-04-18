@@ -15,25 +15,22 @@ export function ReadBuilds() {
 	const [confirmDeleteId, setConfirmDeleteId] = useState(null);
 
 	useEffect(() => {
+		const fetchBuilds = async () => {
+			try {
+				const response = await axios.get(`${URL}/user/${user._id}`, {
+					headers: {
+						Authorization: `Bearer ${token}`,
+					},
+				});
+				setBuilds(response.data);
+				setLoading(false);
+			} catch (error) {
+				setError("Error fetching PC builds");
+				setLoading(false);
+			}
+		};
 		fetchBuilds();
 	}, []);
-
-	const fetchBuilds = async () => {
-		try {
-			setLoading(true);
-			const response = await axios.get(`${URL}/user/${user._id}`, {
-				headers: {
-					Authorization: `Bearer ${token}`,
-				},
-			});
-			setBuilds(response.data);
-			setLoading(false);
-		} catch (error) {
-			setError("Error fetching PC builds");
-			setLoading(false);
-			console.error("Error fetching builds", error);
-		}
-	};
 
 	const showComponentDetails = (partType, part) => {
 		if (!part) return;
@@ -74,11 +71,8 @@ export function ReadBuilds() {
 				setDeleteStatus(null);
 			}, 3000);
 		} catch (error) {
-			console.error("Could not delete build", error);
 			setDeleteStatus({ error: "Failed to delete build", buildId });
-
 			setConfirmDeleteId(null);
-
 			setTimeout(() => {
 				setDeleteStatus(null);
 			}, 3000);

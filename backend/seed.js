@@ -1,3 +1,5 @@
+//File used to seed the database with new data
+
 const {
 	CPU,
 	GPU,
@@ -6,7 +8,7 @@ const {
 	Case,
 	Motherboard,
 	PSU,
-} = require("./models/part");
+} = require("./models/component");
 
 const cpus = [
 	{

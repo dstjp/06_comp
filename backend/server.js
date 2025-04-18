@@ -2,7 +2,7 @@ const express = require("express");
 const cors = require("cors");
 const db = require("./connect");
 
-const partRoutes = require("./routes/partRoutes");
+const compRoutes = require("./routes/componentRoutes");
 const buildRoutes = require("./routes/buildRoutes");
 const userRoutes = require("./routes/userRoutes");
 
@@ -12,7 +12,7 @@ const PORT = process.env.PORT || 3000;
 app.use(cors());
 app.use(express.json());
 
-app.use("/api/component", partRoutes);
+app.use("/api/component", compRoutes);
 app.use("/api/build", buildRoutes);
 app.use("/api/users", userRoutes);
 

@@ -1,6 +1,6 @@
 const Build = require("../models/build");
 const User = require("../models/user");
-const { Component } = require("../models/part");
+const { Component } = require("../models/component");
 
 exports.createBuild = async (request, response) => {
 	try {
