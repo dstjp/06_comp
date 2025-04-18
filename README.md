@@ -51,7 +51,8 @@ npm install
 3. Create a config.env file
 
 - `MONGO_URI=yourmongouri`
-- `PORT=portnumber` -`SECRETKEY=secretkey`
+- `PORT=portnumber`
+- `SECRETKEY=secretkey`
 
 \*Currently this website is not in production and only people who have been given the config.env file information can get full use of the website.
 
