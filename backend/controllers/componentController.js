@@ -1,4 +1,4 @@
-const { Component } = require("../models/part");
+const { Component } = require("../models/component");
 
 //Retrieve all parts
 exports.getComponents = async (request, response) => {
