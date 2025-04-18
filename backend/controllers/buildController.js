@@ -98,7 +98,7 @@ exports.getBuildById = async (request, response) => {
 	}
 };
 
-//Retrieve all builds
+//Retrieve all builds (For development)
 exports.getBuild = async (request, response) => {
 	try {
 		const builds = request.params.data;
@@ -137,7 +137,7 @@ exports.getUserBuilds = async (request, response) => {
 	}
 };
 
-//Update PC Build
+//Update PC Build (Did not have time to implement)
 exports.updateBuild = async (request, response) => {
 	try {
 		const {
