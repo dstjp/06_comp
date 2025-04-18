@@ -2,6 +2,8 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../components/AuthContext";
 
+const URL = import.meta.env.VITE_API_URL || "/api";
+
 export function Login() {
 	const [user, setUser] = useState({
 		email: "",
@@ -27,13 +29,24 @@ export function Login() {
 		setIsLoading(true);
 
 		try {
-			const response = await fetch("http://localhost:3000/api/users/login", {
+			const response = await fetch(`${URL}/users/login`, {
 				method: "POST",
 				headers: {
 					"Content-Type": "application/json",
 				},
 				body: JSON.stringify(user),
 			});
+
+			//error handling
+
+			const contentType = response.headers.get("content-type");
+
+			if (contentType && contentType.includes("application/json")) {
+				data = await response.json();
+			} else {
+				const text = await response.text();
+				throw new Error(`Server error: ${text}`);
+			}
 
 			const data = await response.json();
 

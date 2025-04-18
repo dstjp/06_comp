@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useAuth } from "./AuthContext";
 import axios from "axios";
 
-const URL = "http://localhost:3000/api/build";
+const URL = import.meta.env.VITE_API_URL || "/api";
 
 export function ReadBuilds() {
 	const { user, token } = useAuth();
