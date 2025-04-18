@@ -82,7 +82,7 @@ The API stores it's data in a database. Restarting the API has no effect on the 
 
 Q: A file in the repository explains with at least 4 sentences, maximum 50, how you ensured the application was accessible and SEO-friendly (with a focus on accessibility)
 
-A: o make my application accessible to all users, I’ve implemented key web accessibility best practices. This includes using semantic HTML to give content clear structure and meaning, ensuring strong color contrast for readability, applying appropriate ARIA roles and attributes, and enabling full keyboard navigation to support users who rely on non-mouse input.
+A: To make my application accessible to all users, I’ve implemented key web accessibility best practices. This includes using semantic HTML to give content clear structure and meaning, ensuring strong color contrast for readability, applying appropriate ARIA roles and attributes, and enabling full keyboard navigation to support users who rely on non-mouse input.
 
 For better SEO, I’ve included a well-crafted meta description that summarizes the app’s content. This not only helps search engines understand the page but also improves visibility in search results, potentially boosting traffic through more relevant and enticing snippets.
 
