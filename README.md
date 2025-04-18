@@ -31,10 +31,10 @@ Install dependencies for both the frontend and backend from the root directory.
 Run the following command:
 
 ```bash
-npm i
+npm install
 ```
 
-Then install dependencides for each part.
+Then also install dependencies for each part.
 
 ```bash
 # Install backend dependencies
