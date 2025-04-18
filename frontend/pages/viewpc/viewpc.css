@@ -10,7 +10,7 @@
 }
 .viewbuilds-list {
 	display: grid;
-	grid-template-columns: auto auto;
+	grid-template-columns: auto auto auto;
 }
 .viewbuild-grid {
 	display: grid;
@@ -19,7 +19,6 @@
 .viewbuild-card {
 	padding: 1rem;
 	margin: 0.25rem;
-	font-size: 1.25rem;
 	border: 1px solid white;
 	border-radius: 1rem;
 }
@@ -139,4 +138,60 @@
 
 .rb-error-handling-message {
 	font-size: 2rem;
+}
+
+@media only screen and (max-width: 2300px) {
+	.viewbuilds-list {
+		display: grid;
+		grid-template-columns: auto auto;
+	}
+	.viewbuild-name {
+		font-size: 1.75rem;
+	}
+	.viewbuild-card p {
+		font-size: 1.5rem;
+	}
+}
+
+@media only screen and (max-width: 1300px) {
+	.viewbuilds-list {
+		display: grid;
+		grid-template-columns: auto auto;
+	}
+	.viewbuild-grid {
+		display: grid;
+		grid-template-columns: auto;
+	}
+	.viewbuild-card {
+		padding: 1rem;
+		margin: 0.25rem;
+		font-size: 1.25rem;
+	}
+	.viewbuild-name {
+		font-size: 1.75rem;
+	}
+	.viewbuild-card p {
+		font-size: 1.5rem;
+	}
+}
+
+@media only screen and (max-width: 900px) {
+	.component-details-panel {
+		font-size: 1.25rem;
+		width: 50%;
+	}
+	.component-name-details {
+		font-size: 1.5rem;
+	}
+}
+
+@media only screen and (max-width: 725px) {
+	.viewbuilds-list {
+		display: grid;
+		grid-template-columns: auto;
+	}
+
+	.viewpc-title {
+		font-size: 2rem;
+	}
 }
