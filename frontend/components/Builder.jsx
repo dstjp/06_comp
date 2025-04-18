@@ -61,7 +61,6 @@ export function Builder() {
 			} catch (error) {
 				setError("Error fetching components");
 				setLoading(false);
-				console.error("Error fetching components", error);
 			}
 		};
 
@@ -115,8 +114,6 @@ export function Builder() {
 				}
 			});
 
-			console.log("Saving build:", buildData);
-
 			const response = await axios.post(`${URL}/build`, buildData, {
 				headers: {
 					"Content-Type": "application/json",
@@ -134,10 +131,6 @@ export function Builder() {
 			}
 		} catch (error) {
 			setError("Error saving PC build. Please try again.");
-			console.error(
-				"Error saving build:",
-				error.response?.data || error.message
-			);
 		}
 	};
 

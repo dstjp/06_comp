@@ -18,7 +18,7 @@ export function Homepage() {
 				</p>
 			</div>
 			<div className="button-container">
-				<a href="/#/createpc" className="create-button">
+				<a href="/createpc" className="create-button">
 					Start Creating
 				</a>
 			</div>

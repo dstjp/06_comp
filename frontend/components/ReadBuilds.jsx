@@ -27,7 +27,6 @@ export function ReadBuilds() {
 			} catch (error) {
 				setError("Error fetching PC builds");
 				setLoading(false);
-				console.error("Error fetching builds", error);
 			}
 		};
 		fetchBuilds();
@@ -72,11 +71,8 @@ export function ReadBuilds() {
 				setDeleteStatus(null);
 			}, 3000);
 		} catch (error) {
-			console.error("Could not delete build", error);
 			setDeleteStatus({ error: "Failed to delete build", buildId });
-
 			setConfirmDeleteId(null);
-
 			setTimeout(() => {
 				setDeleteStatus(null);
 			}, 3000);

@@ -5,9 +5,9 @@ import "./navbar.css";
 export function Navbar() {
 	return (
 		<div className="navbar">
-			{pageData.map((page) => {
+			{pageData.map((page, index) => {
 				return (
-					<Link to={page.path}>
+					<Link key={index} to={page.path}>
 						<button className="navbar-button">{page.name}</button>
 					</Link>
 				);
