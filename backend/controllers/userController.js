@@ -11,16 +11,13 @@ exports.createUser = async (request, response) => {
 	try {
 		const { username, email, password } = request.body;
 
-		// Check if user exists
 		const existingUser = await User.findOne({ $or: [{ email }, { username }] });
 		if (existingUser) {
 			return response.status(409).json({ message: "User already exists" });
 		}
 
-		// Hash password
 		const hashedPassword = await bcrypt.hash(password, SALT_ROUNDS);
 
-		// Create user
 		const user = new User({
 			username,
 			email,
@@ -37,7 +34,6 @@ exports.createUser = async (request, response) => {
 	}
 };
 
-// Login
 exports.loginUser = async (request, response) => {
 	try {
 		const { email, password } = request.body;
@@ -66,7 +62,6 @@ exports.loginUser = async (request, response) => {
 	}
 };
 
-// Get user details
 exports.getUser = async (request, response) => {
 	try {
 		const userId = request.userData.userId;
