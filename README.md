@@ -48,7 +48,7 @@ cd frontend
 npm install
 ```
 
-3. Create a config.env file
+3. Create a config.env file in the backend folder
 
 - `MONGO_URI=yourmongouri`
 - `PORT=portnumber`
