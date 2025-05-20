@@ -1,5 +1,7 @@
 import { useState } from "react";
 
+const URL = import.meta.env.VITE_API_URL || "/api";
+
 export function CreateUser() {
 	const [user, setUser] = useState({
 		username: "",
@@ -22,7 +24,7 @@ export function CreateUser() {
 		setError("");
 
 		try {
-			const response = await fetch("http://localhost:3000/api/users/register", {
+			const response = await fetch(`${URL}/users/register`, {
 				method: "POST",
 				headers: {
 					"Content-Type": "application/json",
