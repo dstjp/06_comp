@@ -24,7 +24,7 @@ export function AuthProvider({ children }) {
 
 	const fetchUserProfile = async () => {
 		try {
-			const response = await fetch(`${URL}/users/profile`, {
+			const response = await fetch(`${URL}/api/users/profile`, {
 				headers: {
 					Authorization: `Bearer ${token}`,
 				},

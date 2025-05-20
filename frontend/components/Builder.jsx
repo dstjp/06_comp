@@ -37,7 +37,7 @@ export function Builder() {
 			try {
 				setLoading(true);
 
-				const response = await axios.get(`${URL}/component`, {
+				const response = await axios.get(`${URL}/api/component`, {
 					headers: {
 						Authorization: `Bearer ${token}`,
 					},
