@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useAuth } from "./AuthContext";
 import axios from "axios";
 
-const URL = "https://zero6-comp.onrender.com" || "/api";
+const URL = "https://zero6-comp.onrender.com";
 
 export function Builder() {
 	const { user, token } = useAuth();
@@ -37,7 +37,7 @@ export function Builder() {
 			try {
 				setLoading(true);
 
-				const response = await axios.get(`${URL}/api/component`, {
+				const response = await axios.get(`${URL}/component`, {
 					headers: {
 						Authorization: `Bearer ${token}`,
 					},
@@ -117,7 +117,7 @@ export function Builder() {
 			const response = await axios.post(`${URL}/build`, buildData, {
 				headers: {
 					"Content-Type": "application/json",
-					Authorization: `Bearer ${token}`, // Add authentication header
+					Authorization: `Bearer ${token}`,
 				},
 			});
 

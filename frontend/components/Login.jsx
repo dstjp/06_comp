@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../components/AuthContext";
 
-const URL = "https://zero6-comp.onrender.com" || "/api";
+const URL = "https://zero6-comp.onrender.com";
 
 export function Login() {
 	const [user, setUser] = useState({
@@ -29,7 +29,7 @@ export function Login() {
 		setIsLoading(true);
 
 		try {
-			const response = await fetch(`${URL}/api/users/login`, {
+			const response = await fetch(`${URL}/users/login`, {
 				method: "POST",
 				headers: {
 					"Content-Type": "application/json",

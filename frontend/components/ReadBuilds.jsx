@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useAuth } from "./AuthContext";
 import axios from "axios";
 
-const URL = "https://zero6-comp.onrender.com" || "/api";
+const URL = "https://zero6-comp.onrender.com";
 
 export function ReadBuilds() {
 	const { user, token } = useAuth();
@@ -27,7 +27,7 @@ export function ReadBuilds() {
 
 	const fetchBuilds = async () => {
 		try {
-			const response = await axios.get(`${URL}/api/user/${user._id}`, {
+			const response = await axios.get(`${URL}/user/${user._id}`, {
 				headers: {
 					Authorization: `Bearer ${token}`,
 				},
