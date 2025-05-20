@@ -41,14 +41,13 @@ export function Login() {
 
 			const contentType = response.headers.get("content-type");
 
+			let data;
 			if (contentType && contentType.includes("application/json")) {
 				data = await response.json();
 			} else {
 				const text = await response.text();
 				throw new Error(`Server error: ${text}`);
 			}
-
-			let data = await response.json();
 
 			if (response.ok) {
 				login(data.token);
