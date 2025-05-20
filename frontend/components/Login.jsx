@@ -48,7 +48,7 @@ export function Login() {
 				throw new Error(`Server error: ${text}`);
 			}
 
-			const data = await response.json();
+			let data = await response.json();
 
 			if (response.ok) {
 				login(data.token);
