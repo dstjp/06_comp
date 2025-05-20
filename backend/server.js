@@ -22,7 +22,7 @@ app.use(
 
 const connectDB = async () => {
 	try {
-		const connectionString = process.env.M_URI || process.env.M_URI;
+		const connectionString = process.env.MONGO_URI || process.env.M_URI;
 		mongoose.connect(connectionString);
 		console.log("MongoDB connection successful");
 	} catch (error) {
@@ -33,7 +33,7 @@ const connectDB = async () => {
 
 connectDB();
 
-app.get("/", (res) => {
+app.get("/", (req, res) => {
 	res.send("API is running...");
 });
 
