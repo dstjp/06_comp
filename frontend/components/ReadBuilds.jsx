@@ -27,7 +27,7 @@ export function ReadBuilds() {
 
 	const fetchBuilds = async () => {
 		try {
-			const response = await axios.get(`${URL}/user/${user._id}`, {
+			const response = await axios.get(`${URL}/api/user/${user._id}`, {
 				headers: {
 					Authorization: `Bearer ${token}`,
 				},

@@ -24,7 +24,7 @@ export function CreateUser() {
 		setError("");
 
 		try {
-			const response = await fetch(`${URL}/users/register`, {
+			const response = await fetch(`${URL}/api/users/register`, {
 				method: "POST",
 				headers: {
 					"Content-Type": "application/json",

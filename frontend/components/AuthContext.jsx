@@ -2,7 +2,7 @@ import { createContext, useContext, useState, useEffect } from "react";
 
 const AuthContext = createContext(null);
 
-const URL = import.meta.env.VITE_API_URL || "/api";
+const URL = "https://zero6-comp.onrender.com" || "/api";
 
 export function AuthProvider({ children }) {
 	const [token, setToken] = useState(sessionStorage.getItem("token"));
@@ -24,7 +24,7 @@ export function AuthProvider({ children }) {
 
 	const fetchUserProfile = async () => {
 		try {
-			const response = await fetch(`${URL}/users/profile`, {
+			const response = await fetch(`${URL}/api/users/profile`, {
 				headers: {
 					Authorization: `Bearer ${token}`,
 				},
