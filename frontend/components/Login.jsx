@@ -29,7 +29,7 @@ export function Login() {
 		setIsLoading(true);
 
 		try {
-			const response = await fetch(`${URL}/users/login`, {
+			const response = await fetch(`${URL}/api/users/login`, {
 				method: "POST",
 				headers: {
 					"Content-Type": "application/json",
