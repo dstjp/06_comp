@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-const URL = "https://zero6-comp.onrender.com" || "/api";
+const URL = "https://zero6-comp.onrender.com";
 
 export function CreateUser() {
 	const [user, setUser] = useState({
@@ -24,7 +24,7 @@ export function CreateUser() {
 		setError("");
 
 		try {
-			const response = await fetch(`${URL}/api/users/register`, {
+			const response = await fetch(`${URL}/users/register`, {
 				method: "POST",
 				headers: {
 					"Content-Type": "application/json",
