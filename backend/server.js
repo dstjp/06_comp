@@ -3,7 +3,6 @@ const cors = require("cors");
 const dotenv = require("dotenv");
 const mongoose = require("mongoose");
 
-// Import routes
 const compRoutes = require("./routes/componentRoutes");
 const buildRoutes = require("./routes/buildRoutes");
 const userRoutes = require("./routes/userRoutes");
@@ -13,12 +12,10 @@ dotenv.config({ path: "./config.env" });
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-// Middleware
 app.use(express.json());
 app.use(
 	cors({
-		// Update these origins for your Netlify deployment
-
+		origin: ["https://dstjp-pcbuilder.netlify.app", "http://localhost:5173"],
 		credentials: true,
 	})
 );
