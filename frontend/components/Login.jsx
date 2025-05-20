@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../components/AuthContext";
 
-const URL = import.meta.env.VITE_API_URL || "/api";
+const URL = "https://zero6-comp.onrender.com" || "/api";
 
 export function Login() {
 	const [user, setUser] = useState({

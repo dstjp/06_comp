@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useAuth } from "./AuthContext";
 import axios from "axios";
 
-const URL = import.meta.env.VITE_API_URL || "/api";
+const URL = "https://zero6-comp.onrender.com" || "/api";
 
 export function Builder() {
 	const { user, token } = useAuth();
