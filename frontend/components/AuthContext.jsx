@@ -7,6 +7,7 @@ const URL = "https://zero6-comp.onrender.com";
 export function AuthProvider({ children }) {
 	const [token, setToken] = useState(sessionStorage.getItem("token"));
 	const [user, setUser] = useState(null);
+	const [loading, setLoading] = useState(true);
 
 	useEffect(() => {
 		if (token) {
@@ -19,10 +20,13 @@ export function AuthProvider({ children }) {
 	useEffect(() => {
 		if (token) {
 			fetchUserProfile();
+		} else {
+			setLoading(false);
 		}
 	}, [token]);
 
 	const fetchUserProfile = async () => {
+		setLoading(true);
 		try {
 			const response = await fetch(`${URL}/users/profile`, {
 				headers: {
@@ -34,10 +38,14 @@ export function AuthProvider({ children }) {
 				const userData = await response.json();
 				setUser(userData);
 			} else {
+				console.error("Invalid token or unauthorized");
 				logout();
 			}
 		} catch (error) {
 			console.error("Failed to fetch user profile:", error);
+			logout();
+		} finally {
+			setLoading(false);
 		}
 	};
 
@@ -56,6 +64,7 @@ export function AuthProvider({ children }) {
 		login,
 		logout,
 		isAuthenticated: !!token,
+		loading,
 	};
 
 	return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
