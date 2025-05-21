@@ -1,11 +1,9 @@
 import { useState, useEffect } from "react";
 import { useAuth } from "./AuthContext";
-import axios from "axios";
-
-const URL = "https://zero6-comp.onrender.com";
+import api from "./axiosConfig";
 
 export function ReadBuilds() {
-	const { user, token, loading: authLoading } = useAuth();
+	const { user, token, loading: authLoading, refreshUserProfile } = useAuth();
 	const [builds, setBuilds] = useState([]);
 	const [loading, setLoading] = useState(true);
 	const [error, setError] = useState(null);
@@ -26,18 +24,34 @@ export function ReadBuilds() {
 	}, [user, token, authLoading]);
 
 	const fetchBuilds = async () => {
+		if (!user || !user._id) {
+			console.error("No user ID available");
+			return;
+		}
+
 		setLoading(true);
 		try {
-			const response = await axios.get(`${URL}/user/${user._id}`, {
-				headers: {
-					Authorization: `Bearer ${token}`,
-				},
-			});
+			const response = await api.get(`/user/${user._id}`);
 			setBuilds(response.data);
 			setError(null);
 		} catch (error) {
 			console.error("Error fetching builds:", error);
-			setError("Error fetching PC builds. Please try again.");
+
+			if (error.response) {
+				if (error.response.status === 401 || error.response.status === 403) {
+					setError("Your session has expired. Please log in again.");
+				} else {
+					setError(
+						`Error fetching PC builds: ${
+							error.response.data.message || "Please try again."
+						}`
+					);
+				}
+			} else if (error.request) {
+				setError("Network error. Please check your connection and try again.");
+			} else {
+				setError("An unexpected error occurred. Please try again.");
+			}
 		} finally {
 			setLoading(false);
 		}
@@ -63,11 +77,8 @@ export function ReadBuilds() {
 	const confirmDelete = async (buildId) => {
 		try {
 			setDeleteStatus({ loading: true, buildId });
-			await axios.delete(`${URL}/${buildId}`, {
-				headers: {
-					Authorization: `Bearer ${token}`,
-				},
-			});
+
+			await api.delete(`/${buildId}`);
 			setDeleteStatus({ success: true, buildId });
 
 			setBuilds(builds.filter((build) => build._id !== buildId));
@@ -86,7 +97,11 @@ export function ReadBuilds() {
 				setDeleteStatus(null);
 			}, 3000);
 		} catch (error) {
-			setDeleteStatus({ error: "Failed to delete build", buildId });
+			console.error("Delete error:", error);
+			setDeleteStatus({
+				error: error.response?.data?.message || "Failed to delete build",
+				buildId,
+			});
 			setConfirmDeleteId(null);
 			setTimeout(() => {
 				setDeleteStatus(null);
@@ -119,6 +134,17 @@ export function ReadBuilds() {
 		};
 		return <strong className="component-label">{labels[type]}</strong>;
 	};
+
+	if (authLoading) {
+		return (
+			<div className="viewpc-container">
+				<h3 className="viewpc-title">YOUR PCs</h3>
+				<div className="rb-error-handling-container">
+					<p className="rb-error-handling-message">Verifying your account...</p>
+				</div>
+			</div>
+		);
+	}
 
 	return (
 		<div className="viewpc-container">
