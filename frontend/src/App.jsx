@@ -6,7 +6,7 @@ import { CreateBuilds } from "../pages/createpc/CreateBuilds";
 import { ViewBuilds } from "../pages/viewpc/ViewBuilds";
 import { Layout } from "../components/Layout";
 import { ProtectedRoute } from "../components/ProtectedRoute";
-import { AuthProvider } from "./AuthContext";
+import { AuthProvider } from "../components/AuthContext";
 
 function App() {
 	return (
