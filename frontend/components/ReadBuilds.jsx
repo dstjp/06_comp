@@ -5,7 +5,7 @@ import axios from "axios";
 const URL = "https://zero6-comp.onrender.com";
 
 export function ReadBuilds() {
-	const { user, token } = useAuth();
+	const { user, token, loading: authLoading } = useAuth();
 	const [builds, setBuilds] = useState([]);
 	const [loading, setLoading] = useState(true);
 	const [error, setError] = useState(null);
@@ -15,17 +15,18 @@ export function ReadBuilds() {
 	const [confirmDeleteId, setConfirmDeleteId] = useState(null);
 
 	useEffect(() => {
-		if (user && token) {
-			fetchBuilds();
-		} else if (token && !user) {
-			setLoading(true);
-		} else {
-			setLoading(false);
-			setError("Authentication required. Please log in.");
+		if (!authLoading) {
+			if (user && token) {
+				fetchBuilds();
+			} else if (!token) {
+				setLoading(false);
+				setError("Authentication required. Please log in.");
+			}
 		}
-	}, [user, token]);
+	}, [user, token, authLoading]);
 
 	const fetchBuilds = async () => {
+		setLoading(true);
 		try {
 			const response = await axios.get(`${URL}/user/${user._id}`, {
 				headers: {
@@ -33,12 +34,13 @@ export function ReadBuilds() {
 				},
 			});
 			setBuilds(response.data);
-			setLoading(false);
+			setError(null);
 		} catch (error) {
-			setError("Error fetching PC builds");
+			console.error("Error fetching builds:", error);
+			setError("Error fetching PC builds. Please try again.");
+		} finally {
 			setLoading(false);
 		}
-		fetchBuilds();
 	};
 
 	const showComponentDetails = (partType, part) => {
@@ -61,7 +63,11 @@ export function ReadBuilds() {
 	const confirmDelete = async (buildId) => {
 		try {
 			setDeleteStatus({ loading: true, buildId });
-			await axios.delete(`${URL}/${buildId}`);
+			await axios.delete(`${URL}/${buildId}`, {
+				headers: {
+					Authorization: `Bearer ${token}`,
+				},
+			});
 			setDeleteStatus({ success: true, buildId });
 
 			setBuilds(builds.filter((build) => build._id !== buildId));
@@ -118,7 +124,7 @@ export function ReadBuilds() {
 		<div className="viewpc-container">
 			<h3 className="viewpc-title">YOUR PCs</h3>
 
-			{loading ? (
+			{authLoading || loading ? (
 				<div className="rb-error-handling-container">
 					<p className="rb-error-handling-message">Loading builds...</p>
 				</div>
