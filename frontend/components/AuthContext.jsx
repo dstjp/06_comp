@@ -56,6 +56,7 @@ export function AuthProvider({ children }) {
 	const logout = () => {
 		setToken(null);
 		setUser(null);
+		sessionStorage.removeItem("token");
 	};
 
 	const value = {
