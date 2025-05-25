@@ -83,7 +83,15 @@ export function AuthProvider({ children }) {
 	const isTokenExpired = () => {
 		if (!token) return true;
 
-		return token.split(".").length !== 3;
+		try {
+			const parts = token.split(".");
+			if (parts.length !== 3) return true;
+
+			const payload = JSON.parse(atob(parts[1]));
+			return payload.exp * 1000 < Date.now();
+		} catch {
+			return true;
+		}
 	};
 
 	const value = {

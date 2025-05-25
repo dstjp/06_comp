@@ -13,7 +13,8 @@ export function ReadBuilds() {
 	const [confirmDeleteId, setConfirmDeleteId] = useState(null);
 
 	useEffect(() => {
-		if (!authLoading) return;
+		if (authLoading) return;
+
 		if (user && token) {
 			fetchBuilds();
 		} else if (!token) {
