@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const URL = "https://zero6-comp.onrender.com";
+const URL = import.meta.env.VITE_API_URL;
 
 const api = axios.create({
 	baseURL: URL,

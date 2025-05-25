@@ -8,7 +8,7 @@ import {
 
 const AuthContext = createContext(null);
 
-const URL = "https://zero6-comp.onrender.com";
+const URL = import.meta.env.VITE_API_URL;
 
 export function AuthProvider({ children }) {
 	const [token, setToken] = useState(sessionStorage.getItem("token"));

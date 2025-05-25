@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-const URL = "https://zero6-comp.onrender.com";
+const URL = import.meta.env.VITE_API_URL;
 
 export function CreateUser() {
 	const [user, setUser] = useState({
