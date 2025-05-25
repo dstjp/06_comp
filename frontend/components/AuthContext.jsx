@@ -71,6 +71,7 @@ export function AuthProvider({ children }) {
 	const login = (newToken) => {
 		setToken(newToken);
 		setAuthError(null);
+		fetchUserProfile();
 	};
 
 	const logout = () => {
@@ -91,7 +92,7 @@ export function AuthProvider({ children }) {
 		login,
 		logout,
 		refreshUserProfile,
-		isAuthenticated: !!token && !!user,
+		isAuthenticated: !!token && (!loading ? !!user : false),
 		loading,
 		authError,
 		isTokenExpired,

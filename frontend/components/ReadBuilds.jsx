@@ -13,19 +13,18 @@ export function ReadBuilds() {
 	const [confirmDeleteId, setConfirmDeleteId] = useState(null);
 
 	useEffect(() => {
-		if (!authLoading) {
-			if (user && token) {
-				fetchBuilds();
-			} else if (!token) {
-				setLoading(false);
-				setError("Authentication required. Please log in.");
-			}
+		if (!authLoading) return;
+		if (user && token) {
+			fetchBuilds();
+		} else if (!token) {
+			setLoading(false);
+			setError("Authentication required. Please log in.");
 		}
 	}, [user, token, authLoading]);
 
 	const fetchBuilds = async () => {
 		if (!user || !user._id) {
-			console.error("No user ID available");
+			setError("No user ID available");
 			return;
 		}
 
