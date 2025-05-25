@@ -2,6 +2,16 @@
 
 Create your own custom personal computer with PC Builder. Using components, such as: CPU, GPU, RAM, Storage, Motherboard, PSU, and Case, the user can create their own PC. Under the View PC tab, the user is able to see the computers they have made along with specifications of each component.
 
+## Technologies
+- React + Vite
+- Express
+- Cors
+- JWT
+- MongoDB with Mongoose
+- Node.js
+
+Deployed using Netlify for frontend and Render for backend
+
 ## Installation
 
 Before you begin, ensure you have the following installed on your computer:
@@ -45,14 +55,6 @@ npm install
 cd frontend
 npm install
 ```
-
-3. Create a config.env file in the backend folder.
-
-- `MONGO_URI=yourmongouri`
-- `PORT=portnumber`
-- `SECRETKEY=secretkey`
-
-\*Currently this website is not in production and only people who have been given the config.env file information can get full use of the website.
 
 4. Start the Application
 
