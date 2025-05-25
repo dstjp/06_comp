@@ -31,7 +31,7 @@ export function ReadBuilds() {
 
 		setLoading(true);
 		try {
-			const response = await api.get(`/user/${user._id}`);
+			const response = await api.get(`/build/user/${user._id}`);
 			setBuilds(response.data);
 			setError(null);
 		} catch (error) {
