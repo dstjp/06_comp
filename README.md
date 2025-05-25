@@ -56,7 +56,7 @@ cd frontend
 npm install
 ```
 
-4. Start the Application
+3. Start the Application
 
 It is recommended to have 2 terminals open when starting the application. One for backend, and one for frontend
 
